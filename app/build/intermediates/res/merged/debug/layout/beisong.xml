@@ -5,10 +5,28 @@
 
     <TextView
         android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/beisongMode" />
+
+    <TextView
+        android:text="TextView"
         android:textSize="60sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/Question" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/beisonglevel" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/beisongtime" />
 
     <TextView
         android:layout_marginTop="30dp"
@@ -26,16 +44,28 @@
         >
 
         <Button
-            android:text="Button"
+            android:text="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/YES" />
+            android:id="@+id/memory_1" />
 
         <Button
-            android:text="Button"
+            android:text="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/NO" />
+            android:id="@+id/memory_2" />
+
+        <Button
+            android:text="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/memory_3" />
+
+        <Button
+            android:text="4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/memory_4" />
     </LinearLayout>
 
 

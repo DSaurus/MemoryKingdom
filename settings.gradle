@@ -1,1 +1,3 @@
-include ':app'
+include ':app', ':hellocharts-library', ':hellocharts-samples'
+project(':hellocharts-library').projectDir = new File('hellocharts-android-master/hellocharts-library')
+project(':hellocharts-samples').projectDir = new File('hellocharts-android-master/hellocharts-samples')

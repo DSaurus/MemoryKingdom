@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hellocharts-android-master/hellocharts-library/hellocharts-library.iml" filepath="$PROJECT_DIR$/hellocharts-android-master/hellocharts-library/hellocharts-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hellocharts-android-master/hellocharts-samples/hellocharts-samples.iml" filepath="$PROJECT_DIR$/hellocharts-android-master/hellocharts-samples/hellocharts-samples.iml" />
       <module fileurl="file://$PROJECT_DIR$/helloworld.iml" filepath="$PROJECT_DIR$/helloworld.iml" />
     </modules>
   </component>

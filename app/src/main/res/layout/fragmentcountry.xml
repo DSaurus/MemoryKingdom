@@ -11,11 +11,39 @@
         android:textSize="60sp"
         android:id="@+id/textView" />
 
+    <TextView
+        android:text="TextView"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/totalword" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/classword" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="bottom">
+
+        <TextView
+            android:text="TextView"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/countrybar" />
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/beisongbar" />
 
         <Button
             android:text="Todaytasks"

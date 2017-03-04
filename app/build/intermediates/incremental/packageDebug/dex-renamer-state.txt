@@ -1,4 +1,4 @@
-#Tue Feb 28 18:29:36 CST 2017
+#Sat Mar 04 18:11:41 CST 2017
 base.0=C\:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_6552ddd95e5f72293a50c99651dd76f54d60b25d
 renamed.1=classes.dex
 renamed.0=classes2.dex

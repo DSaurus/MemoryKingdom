@@ -132,6 +132,10 @@
         "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\layout\\notification_template_big_media_narrow_custom.xml"
     },
     {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragmentlearn.xml",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\layout\\fragmentlearn.xml"
+    },
+    {
         "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_action_tombstone.xml",
         "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\layout\\notification_action_tombstone.xml"
     },
@@ -152,6 +156,10 @@
         "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\layout\\abc_popup_menu_item_layout.xml"
     },
     {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragmentmemory.xml",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\layout\\fragmentmemory.xml"
+    },
+    {
         "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_layout.xml",
         "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\layout\\abc_list_menu_item_layout.xml"
     },
@@ -166,6 +174,14 @@
     {
         "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_multichoice_material.xml",
         "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\layout\\select_dialog_multichoice_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragmentfinish.xml",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\layout\\fragmentfinish.xml"
+    },
+    {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragmentload.xml",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\layout\\fragmentload.xml"
     },
     {
         "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_action_bar_up_container.xml",

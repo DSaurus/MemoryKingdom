@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/learnlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </ListView>
+
+        <TextView android:id="@+id/learnempty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="5pt"
+            android:text="什么都没有，点击下方导入吧"
+            />
+
+        <Button
+            android:text="导入"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/learndownload"
+            android:layout_gravity="bottom"
+            />
+    </FrameLayout>
+
+</LinearLayout>
