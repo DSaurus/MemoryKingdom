@@ -40,7 +40,7 @@ public class MemoryFragment extends Fragment {
     int ntable = 13;
     int[] tablen = new int[13];
     double[] tabledata = new double[13], tablelv = new double[13];
-    File learnfile;
+    File learnfile; String learndata;
     public class Data{
         public String ques, ans;
         public int flag, level, val;
@@ -51,6 +51,11 @@ public class MemoryFragment extends Fragment {
     String ESD = "storage/emulated/0/wtf/";
     View view;
 
+    public interface Mylistener
+    {
+        public void MFtoSF(String str);
+    }
+    public Mylistener listener;
 
     public int max(int a, int b) { return a < b ? b : a; }
     public String read(InputStream fis) throws IOException {
@@ -63,8 +68,8 @@ public class MemoryFragment extends Fragment {
         byte[] data = outstream.toByteArray();
         return new String(data);
     }
-    public long getnumber(String str, int x, int ty)  //ty = 1 返回答案， ty = 0返回下一个数字的出现位置
-    {
+    //ty = 1 返回答案， ty = 0返回下一个数字的出现位置
+    public long getnumber(String str, int x, int ty) {
         long ans = 0, y = 0;
         boolean f = false;
         for(int i = x; i < str.length(); i++)
@@ -78,8 +83,7 @@ public class MemoryFragment extends Fragment {
         if(ty == 1) return ans;
         return y+1;
     }
-    public int transtodata(String str)
-    {
+    public int transtodata(String str) {
         int n = 0;
         StringBuffer cur = new StringBuffer();
         int start = 0;
@@ -121,8 +125,7 @@ public class MemoryFragment extends Fragment {
         fis.write(words);
         fis.close();
     }
-    public void drawline()
-    {
+    public void drawline() {
         String input = "";
         try {
             input = read(new FileInputStream(learnfile));
@@ -205,17 +208,17 @@ public class MemoryFragment extends Fragment {
     public class Settimelistener implements View.OnClickListener
     {
         public void onClick(View view) {
-
+            listener.MFtoSF(learndata);
         }
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragmentmemory, container, false);
         String input = " ";
-        String learndata = getArguments().get("data")+"";
+        learndata = getArguments().get("data")+"";
         learnfile = new File(ESD + learndata + ".txt");
-
-
+        drawline();
+        
 
         return view;
     }

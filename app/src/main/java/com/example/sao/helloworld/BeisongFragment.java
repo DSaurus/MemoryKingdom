@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 
 /**
@@ -34,9 +35,8 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     public Mylistener listener;
 
     //与activity进行通讯
-    public interface Mylistener
-    {
-        public void finishtask(String learndata);
+    public interface Mylistener {
+        public void BFtoFF(String learndata);
     }
 
     //获得知识点等级需要的间隔时间
@@ -64,13 +64,12 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     }
 
     //读入
-    public String read(File file) throws IOException {
-        FileInputStream fis = new FileInputStream(file);
+    public String read(InputStream fis) throws IOException {
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
-        byte[] buffer = new byte[2028];  // TODO: 2017/3/1
+        byte[] buffer = new byte[1024];
         int len = 0;
-        len = fis.read(buffer);
-        outstream.write(buffer, 0, len);
+        while((len = fis.read(buffer)) != -1)
+            outstream.write(buffer, 0, len);
         fis.close(); outstream.close();
         return outstream.toString();
     }
@@ -198,7 +197,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     public void analysedata(File file) {
         String input = " ";
         try {
-            input = read(file);
+            input = read(new FileInputStream(file));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -324,14 +323,14 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
             if(typemode == 2)   //巩固模式
             {
                 nowx = getnext(Q, Qn); //获取下次提问时间最小的单词
-                if(nowx == -1) { listener.finishtask(learndata); return; }
+                if(nowx == -1) { listener.BFtoFF(learndata); return; }
                 datashow(Q[nowx], 1);
             } else {    //新词模式
                 nowx++;
                 if(nowx >= Qn) //转化为巩固模式
                 {
                     Qn = QQn; typemode = 2;
-                    if(Qn == 0) { listener.finishtask(learndata); return; }
+                    if(Qn == 0) { listener.BFtoFF(learndata); return; }
                     Q = Q; nowx = getnext(Q, Qn);
                     datashow(Q[nowx], 1);
                     mode.setText("巩固");

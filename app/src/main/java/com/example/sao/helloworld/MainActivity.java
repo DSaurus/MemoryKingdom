@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements CountryFragment.M
     }
 
     @Override
-    public void countrysend(int x, String str) {
+    public void CFtoBF(int x, String str) {
         BeisongFragment BF = new BeisongFragment();
         FragmentTransaction begin = getFragmentManager().beginTransaction();
         begin.addToBackStack(null);
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements CountryFragment.M
         begin.replace(R.id.main, BF);
         begin.commit();
     }
-    public void memorysend(String str) {
+    public void CFtoMF(String str) {
         FragmentTransaction begin = getFragmentManager().beginTransaction();
         begin.addToBackStack(null);
 
@@ -47,10 +47,11 @@ public class MainActivity extends AppCompatActivity implements CountryFragment.M
         begin.commit();
     }
     //完成任务显示完成页面
-    public void finishtask(String str)
+    public void BFtoFF(String str)
     {
+        getFragmentManager().popBackStack();
         FragmentTransaction begin = getFragmentManager().beginTransaction();
-
+        begin.addToBackStack(null);
         FinishFragment FF = new FinishFragment();
         Bundle bundle = new Bundle();
         bundle.putString("data", str);
@@ -60,20 +61,11 @@ public class MainActivity extends AppCompatActivity implements CountryFragment.M
         begin.commit();
     }
     //回到课程页面
-    public void finishsend(String str)
+    public void FFtoCF(String str)
     {
         getFragmentManager().popBackStack();
-
-        FragmentTransaction begin = getFragmentManager().beginTransaction();
-        CountryFragment CF = new CountryFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("data", str);
-        CF.setArguments(bundle);
-
-        begin.replace(R.id.main, CF);
-        begin.commit();
     }
-    public void loadsend()
+    public void LFtoloadF()
     {
         FragmentTransaction begin = getFragmentManager().beginTransaction();
         begin.addToBackStack(null);
@@ -81,12 +73,11 @@ public class MainActivity extends AppCompatActivity implements CountryFragment.M
         begin.commit();
     }
 
-    public void loadfinishsend() {
+    public void loadFtoLF() {
         getFragmentManager().popBackStack();
-        getFragmentManager().beginTransaction().commit();
     }
 
-    public void learnsend(String str)
+    public void LFtoCF(String str)
     {
         CountryFragment CF = new CountryFragment();
         FragmentTransaction begin = getFragmentManager().beginTransaction();

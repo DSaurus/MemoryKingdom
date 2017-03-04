@@ -5,26 +5,26 @@
     density="xhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="210558845786803"
+    timestamp="212156480619646"
     token="-2550809085249761715"
-    verifier="COLD_SWAP_REQUESTED" >
+    verifier="COMPATIBLE" >
 
     <task
         name="javac"
-        duration="89" />
+        duration="185" />
     <task
         name="instant-run-dex"
-        duration="0" />
+        duration="24" />
     <task
         name="instant-run-transform"
-        duration="15" />
+        duration="21" />
     <task
         name="verifier"
-        duration="1" />
+        duration="29" />
 
     <artifact
-        location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_0\classes.dex"
-        type="DEX" />
+        location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\reload-dex\debug\classes.dex"
+        type="RELOAD_DEX" />
 
     <build
         timestamp="205496269889291"
@@ -34,11 +34,18 @@
             type="MAIN" />
     </build>
     <build
-        timestamp="210558845786803"
+        timestamp="212098008451558"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_0\classes.dex"
             type="DEX" />
+    </build>
+    <build
+        timestamp="212156480619646"
+        verifier="COMPATIBLE" >
+        <artifact
+            location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\reload-dex\debug\classes.dex"
+            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

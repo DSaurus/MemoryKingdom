@@ -48,10 +48,9 @@ public class CountryFragment extends Fragment {
 
     //与activity进行通信
     public Mylistener listener;
-    public interface Mylistener
-    {
-        public void countrysend(int x, String str);
-        public void memorysend(String str);
+    public interface Mylistener {
+        public void CFtoBF(int x, String str);
+        public void CFtoMF(String str);
     }
 
     //将output写入文件wtf
@@ -182,7 +181,7 @@ public class CountryFragment extends Fragment {
     {
         @Override
         public void onClick(View view) {
-            listener.memorysend(learndata);
+            listener.CFtoMF(learndata);
         }
     }
 
@@ -233,7 +232,7 @@ public class CountryFragment extends Fragment {
         public void onClick(View view) {
             int x = (int)getnumber(barword.getText().toString(), 0, 1);
             if(x+nlearn <= 0) { Toast.makeText(getActivity(), "？？？0个单词怎么背", Toast.LENGTH_LONG).show(); return; }
-            if(listener != null) listener.countrysend(x, learndata);
+            if(listener != null) listener.CFtoBF(x, learndata);
         }
     }
     String ESD = "storage/emulated/0/wtf/";

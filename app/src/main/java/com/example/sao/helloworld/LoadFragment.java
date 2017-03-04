@@ -61,9 +61,8 @@ public class LoadFragment extends Fragment{
     File location;
 
     int newn, ndata;
-    public interface Mylistener
-    {
-        public void loadfinishsend();
+    public interface Mylistener {
+        public void loadFtoLF();
     }
     public Mylistener listener;
     public void layoutinit() {
@@ -317,7 +316,7 @@ public class LoadFragment extends Fragment{
                 for(int i = 0; i < ndata; i++) map.put(data[i].ques, i);
             }
             rewritedata(file);
-            listener.loadfinishsend();
+            listener.loadFtoLF();
         }
     }
     public class loadbuttonlistener implements View.OnClickListener {

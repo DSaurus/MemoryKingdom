@@ -43,8 +43,7 @@ public class LearnFragment extends Fragment{
     int nctt;
     ArrayAdapter<String> listadapter = null;
     String ESD = "storage/emulated/0/wtf/";
-    public void transtocontent(String str)
-    {
+    public void transtocontent(String str) {
         nctt = 0;
         StringBuffer temp = new StringBuffer();
         for(int i = 0; i < str.length(); i++)
@@ -59,8 +58,7 @@ public class LearnFragment extends Fragment{
             if(ch != ' ') temp.append(ch);
         }
     }
-    public void learninit()
-    {
+    public void learninit() {
         File file = new File(ESD);
         if(!file.exists()) file.mkdirs();
         file = new File(file, "_learn.txt");
@@ -83,10 +81,9 @@ public class LearnFragment extends Fragment{
         }
     }
 
-    public interface Mylistener
-    {
-        public void loadsend();
-        public void learnsend(String str);
+    public interface Mylistener {
+        public void LFtoloadF();
+        public void LFtoCF(String str);
     }
     public Mylistener listener;
 
@@ -99,13 +96,13 @@ public class LearnFragment extends Fragment{
     }
     public class Loadlistener implements View.OnClickListener {
         public void onClick(View view) {
-            listener.loadsend();
+            listener.LFtoloadF();
         }
     }
 
     public class Listviewlistener implements AdapterView.OnItemClickListener{
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            listener.learnsend(listadapter.getItem(i));
+            listener.LFtoCF(listadapter.getItem(i));
         }
     }
 

@@ -16,7 +16,7 @@ public class FinishFragment extends Fragment {
     public Mylistener listener;
     public interface Mylistener
     {
-        public void finishsend(String str);
+        public void FFtoCF(String str);
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmentfinish, container, false);
@@ -26,7 +26,7 @@ public class FinishFragment extends Fragment {
         finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.finishsend(str);
+                listener.FFtoCF(str);
             }
         });
         return view;
