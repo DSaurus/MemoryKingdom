@@ -1,5 +1,13 @@
 [
     {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\moneycat.png",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\mipmap-xxhdpi\\moneycat.png"
+    },
+    {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\diefish.png",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\mipmap-xxhdpi\\diefish.png"
+    },
+    {
         "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi\\ic_launcher.png",
         "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     }

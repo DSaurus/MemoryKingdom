@@ -7,25 +7,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
         android:textSize="60sp"
         android:id="@+id/textView" />
 
-    <TextView
-        android:text="TextView"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/totalword" />
+        android:layout_height="150dp"
+        android:gravity="center"
+        >
+        <lecho.lib.hellocharts.view.PieChartView
+            android:id="@+id/dataanalysechart"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
+        <lecho.lib.hellocharts.view.PieChartView
+            android:id="@+id/newdatalearnchart"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
 
-    <TextView
-        android:text="TextView"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/classword" />
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/datacharttext"
+            />
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/newdatacharttext"
+             />
+        >
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -43,25 +67,34 @@
         <SeekBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/beisongbar" />
+            android:layout_marginBottom="10dp"
+            android:id="@+id/beisongbar"
+            />
 
-        <Button
-            android:text="Todaytasks"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/todaytask" />
+            android:layout_height="75dp"
+            android:gravity="bottom"
+            android:layout_marginBottom="10dp">
+            <Button
+                android:text="开始任务"
+                android:background="@drawable/buttonshape1"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/todaytask"
+                android:layout_weight="1" />
+            <Button
+                android:text="记忆管理"
+                android:background="@drawable/buttonshape1"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/memoryfunction"
+                android:layout_weight="1" />
 
-        <Button
-            android:text="download"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/download" />
 
-        <Button
-            android:text="memoryfunction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/memoryfunction" />
+        </LinearLayout>
+
     </LinearLayout>
 
 

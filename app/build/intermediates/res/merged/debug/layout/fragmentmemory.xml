@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:srcCompat="@drawable/trackofmemory"
+        android:id="@+id/imageView3" />
+
     <lecho.lib.hellocharts.view.LineChartView
         android:id="@+id/linechart"
         android:layout_width="match_parent"
-        android:layout_height="400dp" />
+        android:layout_height="300dp" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <Button
+            android:text="记忆计划设置"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/MFtoSF"
+            android:background="@drawable/buttonshape1"/>
+    </LinearLayout>
 
 </LinearLayout>

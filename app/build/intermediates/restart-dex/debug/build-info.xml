@@ -5,47 +5,47 @@
     density="xhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="212156480619646"
+    timestamp="527740537894533"
     token="-2550809085249761715"
-    verifier="COMPATIBLE" >
+    verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="185" />
+        duration="134" />
     <task
         name="instant-run-dex"
-        duration="24" />
+        duration="0" />
     <task
         name="instant-run-transform"
-        duration="21" />
+        duration="16" />
     <task
         name="verifier"
-        duration="29" />
+        duration="4" />
 
     <artifact
-        location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\reload-dex\debug\classes.dex"
-        type="RELOAD_DEX" />
+        location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_0\classes.dex"
+        type="DEX" />
 
     <build
-        timestamp="205496269889291"
+        timestamp="522087995669331"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\outputs\apk\app-debug.apk"
             type="MAIN" />
     </build>
     <build
-        timestamp="212098008451558"
+        timestamp="527499969248777"
+        verifier="COLD_SWAP_REQUESTED" >
+        <artifact
+            location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\instant-run-resources\resources-debug.ir.ap_"
+            type="RESOURCES" />
+    </build>
+    <build
+        timestamp="527740537894533"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_0\classes.dex"
             type="DEX" />
-    </build>
-    <build
-        timestamp="212156480619646"
-        verifier="COMPATIBLE" >
-        <artifact
-            location="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\reload-dex\debug\classes.dex"
-            type="RELOAD_DEX" />
     </build>
 
 </instant-run>

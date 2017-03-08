@@ -1,6 +1,7 @@
 package com.example.sao.helloworld;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -19,7 +20,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import lecho.lib.hellocharts.listener.PieChartOnValueSelectListener;
+import lecho.lib.hellocharts.model.PieChartData;
+import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.view.PieChartView;
 
 /**
  * Created by sao on 2017/2/25.
@@ -42,7 +50,9 @@ public class CountryFragment extends Fragment {
     Data[] data = new Data[2017];
     String learndata = null;
     File learnfile;
+    String ESD =  Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
     public int max(int a, int b) { return a < b ? b : a; }
+    public float dmax(float a, float b) { return a < b ? b : a; }
     public int min(int a, int b) { return a > b ? b : a; }
 
 
@@ -154,7 +164,7 @@ public class CountryFragment extends Fragment {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-            barword.setText(("今日要背诵知识量："+i/10+"个"));
+            barword.setText(("今日要背诵新的知识量："+i/10+"个"));
         }
 
         @Override
@@ -166,14 +176,25 @@ public class CountryFragment extends Fragment {
 
     //layout布局设置
     View view;
-    Button tasks, download, memory;
-    TextView totalword, classword;
+    Button tasks, memory;
+    PieChartView datachartview;
+    PieChartData datachart;
+    SeekBar seekbar;
+    List<SliceValue> datachartval = new ArrayList<>();
+
+    PieChartView newdatachartview;
+    PieChartData newdatachart;
+    List<SliceValue> newdatachartval = new ArrayList<>();
+
     public void layoutinit()
     {
         listener = (Mylistener)getActivity();
         tasks = (Button) view.findViewById(R.id.todaytask);
-        download = (Button) view.findViewById(R.id.download);
         memory = (Button) view.findViewById(R.id.memoryfunction);
+        datachartview = (PieChartView) view.findViewById(R.id.dataanalysechart);
+        newdatachartview = (PieChartView) view.findViewById(R.id.newdatalearnchart);
+        datachartview.setOnValueTouchListener(new datachartlistener());
+        newdatachartview.setOnValueTouchListener(new newdatachartlistener());
     }
 
     //切换到memoryline页面
@@ -183,6 +204,57 @@ public class CountryFragment extends Fragment {
         public void onClick(View view) {
             listener.CFtoMF(learndata);
         }
+    }
+
+    public void piechartdata(int n1, int n2, int n3, int n4)
+    {
+        datachartval.clear();
+        datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n1), Color.GRAY));
+        datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n2), Color.BLUE));
+        datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n3), Color.parseColor("#FF9900")));
+        datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n4), Color.RED));
+
+        datachart = new PieChartData();
+        datachart.setHasLabels(true);//显示表情
+        datachart.setHasLabelsOnlyForSelected(false);//不用点击显示占的百分比
+        datachart.setHasLabelsOutside(false);//占的百分比是否显示在饼图外面
+        datachart.setHasCenterCircle(true);//是否是环形显示
+        datachart.setValues(datachartval);//填充数据
+        datachart.setCenterCircleColor(Color.WHITE);//设置环形中间的颜色
+        datachart.setCenterCircleScale(0.5f);//设置环形的大小级别
+        datachart.setCenterText1("知识点记忆情况");//环形中间的文字1
+        datachart.setCenterText1Color(Color.BLACK);//文字颜色
+        datachart.setCenterText1FontSize(8);//文字大小
+
+        datachartview.setPieChartData(datachart);
+        datachartview.setValueSelectionEnabled(true);//选择饼图某一块变大
+        datachartview.setAlpha(0.9f);//设置透明度
+        datachartview.setCircleFillRatio(1f);//设置饼图大小
+    }
+
+    public void newpiechartdata(int n1, int n2, int n3)
+    {
+        newdatachartval.clear();
+        newdatachartval.add(new SliceValue(dmax((float) 0.0001, (float)n1), Color.GRAY));
+        newdatachartval.add(new SliceValue(dmax((float) 0.0001, (float)n2), Color.BLUE));
+        newdatachartval.add(new SliceValue(dmax((float) 0.0001, (float)n3), Color.parseColor("#FF9900")));
+
+        newdatachart = new PieChartData();
+        newdatachart.setHasLabels(true);//显示表情
+        newdatachart.setHasLabelsOnlyForSelected(false);//不用点击显示占的百分比
+        newdatachart.setHasLabelsOutside(false);//占的百分比是否显示在饼图外面
+        newdatachart.setHasCenterCircle(true);//是否是环形显示
+        newdatachart.setValues(newdatachartval);//填充数据
+        newdatachart.setCenterCircleColor(Color.WHITE);//设置环形中间的颜色
+        newdatachart.setCenterCircleScale(0.5f);//设置环形的大小级别
+        newdatachart.setCenterText1("复习情况");//环形中间的文字1
+        newdatachart.setCenterText1Color(Color.BLACK);//文字颜色
+        newdatachart.setCenterText1FontSize(8);//文字大小
+
+        newdatachartview.setPieChartData(newdatachart);
+        newdatachartview.setValueSelectionEnabled(true);//选择饼图某一块变大
+        newdatachartview.setAlpha(0.9f);//设置透明度
+        newdatachartview.setCircleFillRatio(1f);//设置饼图大小
     }
 
     //分析当前数据  获得学习单词量
@@ -204,38 +276,69 @@ public class CountryFragment extends Fragment {
             if(data[i].time + getleveltime(data[i].level) < new Date().getTime()/1000) nlearn++;
             if(data[i].flag == 0) newn++;
         }
-        totalword = (TextView) view.findViewById(R.id.totalword);
-        classword = (TextView) view.findViewById(R.id.classword);
-        totalword.setText(("复习量/知识点总量:  " + nlearn + "/" + n + "   新知识点:" + newn));
-        classword.setText(("陌生:"+n1 + "  有印象:" + n2 + "  比较熟悉:" + n3 + "  非常熟悉:" + n4));
-
         barword = (TextView) view.findViewById(R.id.countrybar);
-        barword.setText(("今日要背诵知识量："+0+"个"));
-        SeekBar seekbar = (SeekBar) view.findViewById(R.id.beisongbar);
-        seekbar.setMax((n - nlearn)*10);
+        barword.setText(("今日要背诵新的知识量："+0+"个"));
+        seekbar = (SeekBar) view.findViewById(R.id.beisongbar);
+        seekbar.setMax(newn*10);
         seekbar.setOnSeekBarChangeListener(new Wordnumlistener());
-    }
 
-    //导入新数据
-    public class Downloadlistener implements  View.OnClickListener
-    {
-        @Override
-        public void onClick(View view) {
-
-        }
+        piechartdata(n1, n2, n3, n4);
+        newpiechartdata(newn, n-newn-nlearn, nlearn);
     }
 
     //进入新的任务
-    public class Taskslistener implements  View.OnClickListener
-    {
+    public class Taskslistener implements  View.OnClickListener {
         @Override
         public void onClick(View view) {
             int x = (int)getnumber(barword.getText().toString(), 0, 1);
-            if(x+nlearn <= 0) { Toast.makeText(getActivity(), "？？？0个单词怎么背", Toast.LENGTH_LONG).show(); return; }
-            if(listener != null) listener.CFtoBF(x, learndata);
+            if(x+nlearn <= 0) { Toast.makeText(getActivity(), "没有知识点可以背呀", Toast.LENGTH_LONG).show(); return; }
+            if(listener != null) {
+                listener.CFtoBF(x, learndata);
+            }
         }
     }
-    String ESD = "storage/emulated/0/wtf/";
+    public class datachartlistener implements PieChartOnValueSelectListener{
+        @Override
+        public void onValueSelected(int arcIndex, SliceValue value) {
+            TextView temp = (TextView) view.findViewById(R.id.datacharttext);
+            String str = " ";
+            switch (arcIndex)
+            {
+                case 0: str = "陌生:";break;
+                case 1: str = "有印象:";break;
+                case 2: str = "比较熟悉:";break;
+                case 3: str = "非常熟悉:";break;
+            }
+            temp.setTextColor(value.getColor());
+            temp.setText(str + value.getValue());
+        }
+        @Override
+        public void onValueDeselected() {
+            TextView temp = (TextView) view.findViewById(R.id.datacharttext);
+            temp.setText("");
+        }
+    }
+    public class newdatachartlistener implements PieChartOnValueSelectListener{
+        @Override
+        public void onValueSelected(int arcIndex, SliceValue value) {
+            TextView temp = (TextView) view.findViewById(R.id.newdatacharttext);
+            String str = " ";
+            switch (arcIndex)
+            {
+                case 0: str = "新知识点:";break;
+                case 1: str = "不需要复习:";break;
+                case 2: str = "需要复习:";break;
+            }
+            temp.setTextColor(value.getColor());
+            temp.setText(str + value.getValue());
+        }
+        @Override
+        public void onValueDeselected() {
+            TextView temp = (TextView) view.findViewById(R.id.newdatacharttext);
+            temp.setText("");
+        }
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragmentcountry, container, false);
         layoutinit();
@@ -244,7 +347,6 @@ public class CountryFragment extends Fragment {
         TextView wtf = (TextView) view.findViewById(R.id.textView);
         wtf.setText(learndata);
         analysedata(learnfile);
-        download.setOnClickListener(new Downloadlistener());
         memory.setOnClickListener(new Memorylistener());
         tasks.setOnClickListener(new Taskslistener());
         return view;

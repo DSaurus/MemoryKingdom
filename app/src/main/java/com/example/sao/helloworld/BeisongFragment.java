@@ -2,6 +2,7 @@ package com.example.sao.helloworld;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,7 @@ import java.util.Date;
 public class BeisongFragment extends Fragment implements View.OnClickListener{
     long[] time_1 = new long[5], time_2 = new long[5], time_3 = new long[5], time_4 = new long[5];
     public int max(int a, int b){ return a < b ? b : a; }
-
+    public int min(int a, int b){ return a < b ? a : b; }
     public class Data{
         public String ques, ans;
         public int flag, level, val;
@@ -32,6 +33,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     }
     Data []data = new Data[1000];
     String learndata;
+    String ESD =  Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
     public Mylistener listener;
 
     //与activity进行通讯
@@ -40,8 +42,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     }
 
     //获得知识点等级需要的间隔时间
-    public long getleveltime(int k)
-    {
+    public long getleveltime(int k) {
         if(k <= 5) return time_1[k-1];
         if(k <= 10) return time_2[k-6];
         if(k <= 15) return time_3[k-11];
@@ -56,8 +57,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     }
 
     //数组转换成字符串
-    public String numarraytostr(long []a)
-    {
+    public String numarraytostr(long []a) {
         StringBuffer temp = new StringBuffer();
         for(int i = 0; i < a.length; i++) temp.append(a[i]+" "); temp.append("\n");
         return temp.toString();
@@ -83,8 +83,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     }
 
     //从字符串获得从x位置的第一个数字  ty = 1 返回答案， ty = 0返回下一个数字的出现位置
-    public long getnumber(String str, int x, int ty)
-    {
+    public long getnumber(String str, int x, int ty) {
         long ans = 0, y = 0;
         boolean f = false;
         for(int i = x; i < str.length(); i++)
@@ -100,8 +99,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     }
 
     //按照需要提问的时间进行排序，新知识点放在后面
-    public void quickSort(Data[] a, int l, int r)
-    {
+    public void quickSort(Data[] a, int l, int r) {
         int ll = l, rr = r;
         boolean flag = true;
         Data base = a[ll];
@@ -129,8 +127,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     }
 
     //将str转化为data
-    public int transtodata(String str)
-    {
+    public int transtodata(String str) {
         int n = 0;
         StringBuffer cur = new StringBuffer();
         int start = 0;
@@ -177,7 +174,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     View view;
     TextView q, a, mode, texttime, level;
     Button memory_1, memory_2, memory_3, memory_4;
-    File learnfile;  //该学科的数据文件
+    File learnfile, learncatfile;  //该学科的数据文件
     public void layoutinit() {
         listener = (Mylistener) getActivity();
         mode = (TextView) view.findViewById(R.id.beisongMode);
@@ -232,6 +229,17 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
             e.printStackTrace();
         }
     }
+    public void savecatdata(int lv, long t) {
+        try {
+            if(!learncatfile.exists()) learncatfile.createNewFile();
+            String output = read(new FileInputStream(learncatfile));
+            if(output.length() > 66666) return;
+            output = output + " " + lv + " " + t + " ";
+            write(output, learncatfile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     //获得队列里下一个最小的时间，返回的是在Q中的下标
     public int getnext(int[] f, int n) {
@@ -277,22 +285,35 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
         return temp.toString();
 
     }
+    public float textsize(String str) {
+        if(str.length() <= 10) return 30;
+        else if(str.length() <= 30) return 25;
+        else if(str.length() <= 50) return 20;
+        return 15;
+    }
+
+    public String delendl(String str) {
+        StringBuffer temp = new StringBuffer();
+        for(int i = 0; i < str.length(); i++)
+            if(str.charAt(i) != '\n') temp.append(str.charAt(i));
+        return temp.toString();
+    }
 
     //ty = 1 提问   ty = 2 答案
     public void datashow(int i, int ty) {
         if(ty == 1)  //初始化对i的提问页面
         {
-            q.setText(data[i].ques);
+            q.setTextSize(textsize(data[i].ques)); q.setText(delendl(data[i].ques));
             a.setText("");
             level.setText(("lv:"+data[i].level));
-            if(data[i].flag == 0) texttime.setText("新词");
+            if(data[i].flag == 0) texttime.setText("新知识");
             else texttime.setText((dateform(gettime() - data[i].time)+"  次数:"+data[i].val));
         } else
         {
-            q.setText(data[i].ques);
-            a.setText(data[i].ans);
+            q.setTextSize(textsize(data[i].ques)); q.setText(delendl(data[i].ques));
+            a.setTextSize(textsize(data[i].ans)); a.setText(data[i].ans);
             level.setText(("lv:"+data[i].level));
-            if(data[i].flag == 0) texttime.setText("新词");
+            if(data[i].flag == 0) texttime.setText("新知识");
             else texttime.setText((dateform(gettime() - data[i].time)+"  次数:"+data[i].val));
         }
     }
@@ -331,7 +352,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
                 {
                     Qn = QQn; typemode = 2;
                     if(Qn == 0) { listener.BFtoFF(learndata); return; }
-                    Q = Q; nowx = getnext(Q, Qn);
+                    Q = QQ; nowx = getnext(Q, Qn);
                     datashow(Q[nowx], 1);
                     mode.setText("巩固");
                 } else {
@@ -351,13 +372,13 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
                         data[i].flag = 2;
                         data[i].begintime = gettime();
                     }
-                    Q[QQn++] = i;
+                    QQ[QQn++] = i;
                     break;
                 case R.id.memory_2:
                     data[i].level = max(5, data[i].level);
                     if(data[i].level <= 10) data[i].level++;
                     else data[i].level = 6;
-                    Q[QQn++] = i;
+                    QQ[QQn++] = i;
                     break;
                 case R.id.memory_3:
                     data[i].level = max(10, data[i].level);
@@ -366,6 +387,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
                 case R.id.memory_4:
                     data[i].level = max(15, data[i].level);
                     data[i].level++;
+                    data[i].level = min(20, data[i].level);
                     break;
             }
         } else      //强化模式
@@ -383,26 +405,32 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
                 case R.id.memory_4:
                     data[i].level = max(10, data[i].level);
                     data[i].level++;
+                    data[i].level = min(20, data[i].level);
                     break;
             }
         }
         if(data[i].flag == 0) data[i].flag = 1;
+        if(data[i].flag == 2) savecatdata(data[i].level, gettime() - data[i].begintime);
         data[i].val++;
         data[i].time = gettime();
         layouttab(1);
         datashow(i, 2);
         savedata(learnfile);
+
     }
-    String ESD = "storage/emulated/0/wtf/";
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.beisong, container, false);
+
         learndata = getArguments().get("data")+"";
         learnfile = new File(ESD + learndata + ".txt");
+        learncatfile = new File(ESD + learndata + "cat.txt");
+
         layoutinit();
         analysedata(learnfile);
         datashow(Q[0], 1);
         layouttab(0);
-        mode.setText("新词");
+        mode.setText("鉴定");
         return view;
     }
 }

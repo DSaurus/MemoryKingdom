@@ -2,6 +2,15 @@
 <items version="2" >
 
     <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="c0bd6ffb002a85b5e7cad29f8558d1cc59539679">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_59ba60684c80f1c543b2a43b817b1d1c199c2b01.jar" />
+    </item>
+    <item
         is-multidex="true"
         jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\libs\internal_impl-25.0.1.jar"
         jumboMode="true"
@@ -20,6 +29,15 @@
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_16e53adf79c177256be927e7a6a03a0beea36e39\classes.dex" />
     </item>
     <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="51eba4a4dd73044f90a9d58dd7ca34adbebfcf4e">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-25.0.1_992e4fba7b129f0b306b8e5bce1b022f17c8bb9b.jar" />
+    </item>
+    <item
         is-multidex="true"
         jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\classes.jar"
         jumboMode="true"
@@ -27,6 +45,15 @@
         revision="25.0.1"
         sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-25.0.1_eb4c604f43f0a12e44851d40d7d3448661ea0845\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-25.0.1_eb4c604f43f0a12e44851d40d7d3448661ea0845.jar" />
     </item>
     <item
         is-multidex="true"
@@ -47,6 +74,15 @@
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.0.1_b3823733ef7d7752bac5e0cbac3735f8aadd10ce\classes.dex" />
     </item>
     <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-25.0.1_b3823733ef7d7752bac5e0cbac3735f8aadd10ce.jar" />
+    </item>
+    <item
         is-multidex="true"
         jar="C:\Users\sao\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.1\support-annotations-25.0.1.jar"
         jumboMode="true"
@@ -65,6 +101,51 @@
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.1_2d24d8009d2fa24cd3749192aec322bd0372d881\classes.dex" />
     </item>
     <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_2d24d8009d2fa24cd3749192aec322bd0372d881.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.4.0\support-annotations-23.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\pre-dexed\debug\support-annotations-23.4.0_a756346c53914234c3109c8f0f04defa6dfc5eaf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\libs\internal_impl-23.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\pre-dexed\debug\internal_impl-23.4.0_c0249d872d07be6e1a1e6df19ed20b8693dedc6c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="b24e1c688744078e1fa833ffadf696794761bbe5">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-25.0.1_85aaf5024bbec0f8ddb45a55cc36551038124ee3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.1\support-annotations-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\support-annotations-25.0.1_7417b1237b3b8390ac2b3778ab20317b7da7e3af.jar" />
+    </item>
+    <item
         is-multidex="true"
         jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.0.1\jars\classes.jar"
         jumboMode="true"
@@ -72,6 +153,24 @@
         revision="25.0.1"
         sha1="b24e1c688744078e1fa833ffadf696794761bbe5">
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.0.1_85aaf5024bbec0f8ddb45a55cc36551038124ee3\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="1b8e03daaa43fb0a4cd57e378167c2fd70454c1e">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-23.3.0_bf7ecf3d6e8f98eed6a530ee563925552e670417.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-25.0.1_ad59baf2635bff5b3b43e9e527b809ba632aab6a.jar" />
     </item>
     <item
         is-multidex="true"
@@ -83,6 +182,15 @@
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.0.1_ad59baf2635bff5b3b43e9e527b809ba632aab6a\classes.dex" />
     </item>
     <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="a0b5d60246cd9d4f3f2443611b3b4c25265840b5">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-23.3.0_ec919e9522e0ea6f10a13b778ca59f0dc6354b62.jar" />
+    </item>
+    <item
         is-multidex="true"
         jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.1\jars\libs\internal_impl-25.0.1.jar"
         jumboMode="true"
@@ -92,13 +200,31 @@
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.1_6120df061e875c2852eb86b39de2411e45d74f05\classes.dex" />
     </item>
     <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\helloworld\hellocharts-library\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="03e52dcebb07486cff391468528545947978f741">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\helloworld-hellocharts-library-unspecified_a9efa8714d4d27ff350de93055ecdfe2d9e8c234.jar" />
+    </item>
+    <item
         is-multidex="true"
         jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.1"
-        sha1="13dbf6a2281f67fc8e8e9a25f4c73804b9102e1b">
+        sha1="b0c93bea79aa9aab1fb99b27869f7f289a9b27f9">
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_6552ddd95e5f72293a50c99651dd76f54d60b25d\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.3.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="23be6993826b8fd88bbc8d14928bb3b8960d3d4e">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-23.3.0_08631d16ed5ba2a8853fa582bcfce667d0d06e6e.jar" />
     </item>
     <item
         is-multidex="true"
@@ -110,6 +236,24 @@
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.1_b9f9c82556e1a03bdeb034302d9855a842a8e1cc\classes.dex" />
     </item>
     <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="772bed2d992b67b9d0327f766cc95cd63031dcd3">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-25.0.1_a8ce15d28fae6e5bfb82aa9fd900475ce208f2cc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="f83b00041ecfba705603fec40363416c7de69719">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_6120df061e875c2852eb86b39de2411e45d74f05.jar" />
+    </item>
+    <item
         is-multidex="true"
         jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.0.1\jars\classes.jar"
         jumboMode="true"
@@ -117,6 +261,51 @@
         revision="25.0.1"
         sha1="772bed2d992b67b9d0327f766cc95cd63031dcd3">
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.0.1_a8ce15d28fae6e5bfb82aa9fd900475ce208f2cc\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="3af8cc51ef7088e56f132780da8c0bd858b6a6ad">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_b9f9c82556e1a03bdeb034302d9855a842a8e1cc.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="bc7e99e8d0fc279a05aa91378530f467ad62d443">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-25.0.1_a179b42cb99905141748d7f83764c2e92639e96b.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="c5b7145fb34779b6639147b8f2f8dd77c0db771b">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_7514f014c13805b2f7e85382a6c6ba4cfde258ba.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\exploded-aar\com.android.support\support-v4\23.4.0\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\pre-dexed\debug\com.android.support-support-v4-23.4.0_ec5b60ce29b55b2f16c3d2bbc96796a4e7977fbf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="00d4c8eebf2b681073c72a26bd0849549e51c7cb">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-25.0.1_62a6af1a47d7a86a4dcf66210cd22c6f139b5239.jar" />
     </item>
     <item
         is-multidex="true"
@@ -153,6 +342,24 @@
         revision="25.0.1"
         sha1="f7ac4b327fdb9e2ee386f5adc46164927658de4b">
         <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-25.0.1_bad800e7759407645d96afa753a273eb4a2696bf\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="f7ac4b327fdb9e2ee386f5adc46164927658de4b">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.0.1_bad800e7759407645d96afa753a273eb4a2696bf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\exploded-aar\helloworld\hellocharts-library\unspecified\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="03e52dcebb07486cff391468528545947978f741">
+        <dex dex="C:\Users\sao\AndroidStudioProjects\helloworld\hellocharts-android-master\hellocharts-samples\build\intermediates\pre-dexed\debug\helloworld-hellocharts-library-unspecified_fc6daaddd65ae5e90ab742dfa9379352bfb7ee6f.jar" />
     </item>
 
 </items>

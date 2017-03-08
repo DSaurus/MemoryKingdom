@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\release\\animator\\fragment_slide_left_out.xml",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\animator\\fragment_slide_left_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\release\\animator\\fragment_slide_right_out.xml",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\animator\\fragment_slide_right_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\release\\animator\\fragment_slide_right_in.xml",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\animator\\fragment_slide_right_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\release\\animator\\fragment_slide_left_in.xml",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\animator\\fragment_slide_left_in.xml"
+    }
+]

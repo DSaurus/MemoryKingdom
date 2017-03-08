@@ -2,10 +2,13 @@ package com.example.sao.helloworld;
 import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
@@ -40,19 +44,30 @@ public class MemoryFragment extends Fragment {
     int ntable = 13;
     int[] tablen = new int[13];
     double[] tabledata = new double[13], tablelv = new double[13];
-    File learnfile; String learndata;
+    File learnfile, learncatfile; String learndata;
     public class Data{
         public String ques, ans;
         public int flag, level, val;
         public long time, calt, begintime;
         //level lv  val--记忆所用次数   time--上次记忆的时间
     }
-    Data[] data = new Data[2017];
-    String ESD = "storage/emulated/0/wtf/";
+    Data[] data = new Data[2017], newcatdata = new Data[2017];
+    int newn;
+    int[][] levelstack = new int[21][222];
+    int[] lvstacktop = new int[21];
+    public void stackadd(int x, int v) {
+        levelstack[x][lvstacktop[x]++] = v;
+    }
+    public int stackpop(int x) {
+        return levelstack[x][--lvstacktop[x]];
+    }
+
+
+
+    String ESD =  Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
     View view;
 
-    public interface Mylistener
-    {
+    public interface Mylistener {
         public void MFtoSF(String str);
     }
     public Mylistener listener;
@@ -68,9 +83,9 @@ public class MemoryFragment extends Fragment {
         byte[] data = outstream.toByteArray();
         return new String(data);
     }
-    //ty = 1 返回答案， ty = 0返回下一个数字的出现位置
+    //ty = 1 返回答案， ty = 0返回下一个数字的出现位置  已更新--找不到数返回length
     public long getnumber(String str, int x, int ty) {
-        long ans = 0, y = 0;
+        long ans = 0, y = -1;
         boolean f = false;
         for(int i = x; i < str.length(); i++)
         {
@@ -80,8 +95,8 @@ public class MemoryFragment extends Fragment {
             ans = ans*10 + ch - '0';
             y = i; f = true;
         }
-        if(ty == 1) return ans;
-        return y+1;
+        if(ty == 1) return (y == -1) ? -1 : ans;
+        return (y == -1) ? str.length() : y+1;
     }
     public int transtodata(String str) {
         int n = 0;
@@ -119,34 +134,56 @@ public class MemoryFragment extends Fragment {
         }
         return n;
     }
+    public void transtocatdata(String str){
+        int n = 0, x = 0;
+        while(x < str.length() && getnumber(str, x, 1) != -1){
+            if(data[n] == null) data[n] = new Data();
+            data[n].level = (int)getnumber(str, x, 1); x = (int)getnumber(str, x, 0);
+            data[n++].time = getnumber(str, x, 1); x = (int)getnumber(str, x, 0);
+        }
+        for(int i = 0; i < 20; i++) lvstacktop[i] = 0;
+        for(int i = 0; i < n; i++) {
+            int lv = data[i].level;
+            if (lvstacktop[lv-1] < 100) stackadd(lv-1, i);
+        }
+    }
     public void write(String output, File file) throws IOException {
         FileOutputStream fis = new FileOutputStream(file);
         byte[] words = output.getBytes();
         fis.write(words);
         fis.close();
     }
-    public void drawline() {
-        String input = "";
+    public void rewritecat(File file) {
+        StringBuffer temp = new StringBuffer();
+        for(int i = 0; i < newn; i++) {
+            temp.append(newcatdata[i].level); temp.append(" ");
+            temp.append(newcatdata[i].time); temp.append(" ");
+        }
         try {
-            input = read(new FileInputStream(learnfile));
+            write(temp.toString(), file);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int n = transtodata(input);
-
+    }
+    public int atwhichtime(long t) {
+        for(int i = 0; i < 13; i++)
+            if(t <= time_table[i])
+                return i;
+        return 12;
+    }
+    public void transtotabledata(){
         for(int i = 0; i < ntable; i++) { tablen[i] = 0; tabledata[i] = 0; tablelv[i] = 0; }
-        for(int i = 0; i < n; i++)
+        for(int i = 0; i < 20; i++)
         {
-            if(data[i].flag != 2) continue;
-            for(int j = 0; j < ntable; j++)
+            while(lvstacktop[i] > 0)
             {
-                if(data[i].time - data[i].begintime <= time_table[j])
-                {
-                    tablen[j]++;
-                    tabledata[j] += data[i].time - data[i].begintime;
-                    tablelv[j] += data[i].level;
-                    break;
-                }
+                int x = stackpop(i);
+                if(data[x].time == 0) continue;
+                int t = atwhichtime(data[x].time);
+                tablen[t]++;
+                tabledata[t] += data[x].time;
+                tablelv[t] += data[x].level;
+                newcatdata[newn++] = data[x];
             }
         }
         for(int i = 0; i < ntable; i++)
@@ -155,8 +192,28 @@ public class MemoryFragment extends Fragment {
             tabledata[i] /= tablen[i];
             tablelv[i] /= tablen[i];
         }
+    }
+    public void drawline() {
+        String input = "";
+        if(!learncatfile.exists())
+        {
+            try {
+                learncatfile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            input = read(new FileInputStream(learncatfile));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        transtocatdata(input); newn = 0;
+        transtotabledata();
+        rewritecat(learncatfile);
         List<PointValue> tpoint = new ArrayList<PointValue>();
-        tpoint.add(new PointValue(0, 0));
+        tpoint.add(new PointValue(0, 1));
         for(int i = 0; i < ntable; i++)
         {
             if(tablen[i] == 0) continue;
@@ -193,9 +250,11 @@ public class MemoryFragment extends Fragment {
         axisX.setMaxLabelChars(1);
         axisX.setValues(axisx);
         axisX.setHasLines(true);
+        axisX.setName("记忆时间");
         linedata.setAxisXBottom(axisX);
 
         Axis axisY = new Axis();
+        axisY.setName("记忆等级");
         linedata.setAxisYLeft(axisY);
 
         linechart.setLineChartData(linedata);
@@ -205,8 +264,7 @@ public class MemoryFragment extends Fragment {
         linechart.setCurrentViewport(v);
     }
 
-    public class Settimelistener implements View.OnClickListener
-    {
+    public class Settimelistener implements View.OnClickListener {
         public void onClick(View view) {
             listener.MFtoSF(learndata);
         }
@@ -214,12 +272,13 @@ public class MemoryFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragmentmemory, container, false);
+        listener = (Mylistener) getActivity();
         String input = " ";
         learndata = getArguments().get("data")+"";
-        learnfile = new File(ESD + learndata + ".txt");
+        learncatfile = new File(ESD + learndata + "cat.txt");
         drawline();
-        
-
+        Button tosf = (Button) view.findViewById(R.id.MFtoSF);
+        tosf.setOnClickListener(new Settimelistener());
         return view;
     }
 }

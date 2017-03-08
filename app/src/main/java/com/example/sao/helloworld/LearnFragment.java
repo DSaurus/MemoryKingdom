@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +44,7 @@ public class LearnFragment extends Fragment{
     String []content = new String[100];
     int nctt;
     ArrayAdapter<String> listadapter = null;
-    String ESD = "storage/emulated/0/wtf/";
+    String ESD = Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
     public void transtocontent(String str) {
         nctt = 0;
         StringBuffer temp = new StringBuffer();
@@ -94,9 +96,18 @@ public class LearnFragment extends Fragment{
         for(int i = 0; i < nctt; i++) temp[i] = content[i];
         return temp;
     }
-    public class Loadlistener implements View.OnClickListener {
-        public void onClick(View view) {
-            listener.LFtoloadF();
+    public class Loadbarlistener implements SeekBar.OnSeekBarChangeListener {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            if(i >= 90)  { listener.LFtoloadF(); seekBar.setProgress(0); }
+        }
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
         }
     }
 
@@ -117,8 +128,9 @@ public class LearnFragment extends Fragment{
 
         if(nctt > 0) listadapter=new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, getcontentstr());
         listview.setAdapter(listadapter);
-        Button download = (Button) view.findViewById(R.id.learndownload);
-        download.setOnClickListener(new Loadlistener());
+        SeekBar download = (SeekBar) view.findViewById(R.id.learnloadbar);
+
+        download.setOnSeekBarChangeListener(new Loadbarlistener());
         listview.setOnItemClickListener(new Listviewlistener());
         return view;
     }

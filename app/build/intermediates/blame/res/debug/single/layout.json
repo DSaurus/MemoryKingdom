@@ -172,6 +172,10 @@
         "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\layout\\abc_screen_simple.xml"
     },
     {
+        "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fragmentsettime.xml",
+        "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\src\\main\\res\\layout\\fragmentsettime.xml"
+    },
+    {
         "merged": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_multichoice_material.xml",
         "source": "C:\\Users\\sao\\AndroidStudioProjects\\helloworld\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\layout\\select_dialog_multichoice_material.xml"
     },

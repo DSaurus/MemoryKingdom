@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_marginTop="30dp"
-        android:text="Mission Complete!!!"
-        android:gravity="center"
-        android:textSize="30sp"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/missioncomplete"
+        android:id="@+id/imageView4" />
 
     <LinearLayout
         android:orientation="vertical"
-        android:gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/thxwennai2"
+        >
 
-        <Button
-            android:text="返回主界面"
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/returnmain" />
+            android:layout_height="100dp"
+            app:srcCompat="@drawable/thankyou"
+            android:id="@+id/imageView5" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <Button
+                android:text="返回主界面"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/returnmain"
+                android:background="@drawable/buttonshape1"/>
+
+        </LinearLayout>
     </LinearLayout>
+
+
 </LinearLayout>

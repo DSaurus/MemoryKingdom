@@ -59,7 +59,7 @@ public class LoadFragment extends Fragment{
     Button loadbutton, loadconfirm;
     Switch loadtype;
     File location;
-
+    String ESD = Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
     int newn, ndata;
     public interface Mylistener {
         public void loadFtoLF();
@@ -71,6 +71,7 @@ public class LoadFragment extends Fragment{
         loadconfirm = (Button) view.findViewById(R.id.loadconfirm);
         loadtxt = (TextView) view.findViewById(R.id.loadtxt);
         loadtype = (Switch) view.findViewById(R.id.loadtype);
+        loadtype.setChecked(true);
     }
 
     public String read(InputStream fis) throws IOException {
@@ -166,7 +167,6 @@ public class LoadFragment extends Fragment{
             if(ch != ' ') temp.append(ch);
         }
     }
-    String ESD = "storage/emulated/0/wtf/";
     //添加新学科到目录中，添加时合并重复学科
     public void rewritewhole(String str) {
         File file = new File(ESD + "_learn.txt");
@@ -199,6 +199,37 @@ public class LoadFragment extends Fragment{
         fis.close();
     }
 
+    //test
+    public int transtoshdata(String str) {
+        int n = 0;
+        StringBuffer temp = new StringBuffer();
+        for(int i = 0; i < str.length(); i++)
+        {
+            char ch = str.charAt(i);
+            if(ch == '）')
+            {
+                newdata[n++].ques = temp.toString();
+                temp = new StringBuffer();
+            } else if(ch == '（')
+            {
+                if(newdata[n] == null) newdata[n] = new Data();
+                newdata[n].ans = temp.toString();
+                temp = new StringBuffer();
+            } else
+            {
+                temp.append(ch);
+            }
+        }
+        for(int i = 0; i < n; i++) {
+            newdata[i].flag = 0;
+            newdata[i].level = 1;
+            newdata[i].val = 0;
+            newdata[i].time = (long)1e12;
+            newdata[i].begintime = 0;
+        }
+        return n;
+    }
+
     //从用户提供的str中读取新数据（并初始化）
     public int transtonewdata(String str) {
         int n = 0;
@@ -229,8 +260,7 @@ public class LoadFragment extends Fragment{
         }
         return n;
     }
-    public String numarraytostr(long []a)
-    {
+    public String numarraytostr(long []a) {
         StringBuffer temp = new StringBuffer();
         for(int i = 0; i < a.length; i++) temp.append(a[i]+" "); temp.append("\n");
         return temp.toString();
@@ -275,12 +305,12 @@ public class LoadFragment extends Fragment{
         public void onClick(View view) {
             if(txtname.getText().toString().length() == 0)
             {
-                Toast.makeText(getActivity(), "文件名呢", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "学科名是什么啊", Toast.LENGTH_SHORT).show();
                 return;
             }
             if(location == null || !location.exists())
             {
-                Toast.makeText(getActivity(), "文件不存在", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "找不到文件怎么破", Toast.LENGTH_SHORT).show();
                 return;
             }
             String learnclass = txtname.getText().toString();
@@ -291,7 +321,7 @@ public class LoadFragment extends Fragment{
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            File file = new File("storage/emulated/0/wtf/");
+            File file = new File(ESD);
             file = new File(file, learnclass + ".txt");
             if(!file.exists())
             {
@@ -359,12 +389,56 @@ public class LoadFragment extends Fragment{
         }
     }
 
+    public class testloadlistener implements View.OnClickListener{
+        public void onClick(View view) {
+            txtname.setText("生化爸爸orz");
+            String learnclass = txtname.getText().toString();
+            rewritewhole(learnclass);
+            try {
+                String input = read(getResources().openRawResource(R.raw.shdata));
+                newn = transtoshdata(input);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            File file = new File(ESD);
+            file = new File(file, learnclass + ".txt");
+            if(!file.exists())
+            {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                time_1 = admintime_1;
+                time_2 = admintime_2;
+                time_3 = admintime_3;
+                time_4 = admintime_4;
+            }
+            if(loadtype.isChecked())
+            {
+                try {
+                    String input = read(new FileInputStream(file));
+                    ndata = transtodata(input);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                for(int i = 0; i < ndata; i++) map.put(data[i].ques, i);
+            }
+            rewritedata(file);
+            listener.loadFtoLF();
+        }
+    }
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragmentload, container, false);
         listener = (Mylistener) getActivity();
         layoutinit();
         loadconfirm.setOnClickListener(new loadconfirmlistener());
         loadbutton.setOnClickListener(new loadbuttonlistener());
+
+        Button testload = (Button) view.findViewById(R.id.testloadbt);
+        testload.setOnClickListener(new testloadlistener());
         return view;
     }
 }
