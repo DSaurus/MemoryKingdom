@@ -71,6 +71,4 @@
             android:id="@+id/memory_4"
             android:background="@drawable/buttonshape1"/>
     </LinearLayout>
-
-
 </LinearLayout>

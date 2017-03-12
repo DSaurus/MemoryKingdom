@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sao on 2017/3/3.
@@ -43,7 +48,7 @@ public class LearnFragment extends Fragment{
     }
     String []content = new String[100];
     int nctt;
-    ArrayAdapter<String> listadapter = null;
+    SimpleAdapter listadapter = null;
     String ESD = Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
     public void transtocontent(String str) {
         nctt = 0;
@@ -90,12 +95,6 @@ public class LearnFragment extends Fragment{
     public Mylistener listener;
 
     ListView listview;
-    String[] getcontentstr()
-    {
-        String[] temp = new String[nctt];
-        for(int i = 0; i < nctt; i++) temp[i] = content[i];
-        return temp;
-    }
     public class Loadbarlistener implements SeekBar.OnSeekBarChangeListener {
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -113,9 +112,24 @@ public class LearnFragment extends Fragment{
 
     public class Listviewlistener implements AdapterView.OnItemClickListener{
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            listener.LFtoCF(listadapter.getItem(i));
+            listener.LFtoCF(content[i]);
         }
     }
+
+    //adpter获取数据
+    public List<Map<String, Object>> getData() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, Object> map = new HashMap<>();
+        for(int i = 0; i < nctt; i++)
+        {
+            map = new HashMap<>();
+            map.put("img", R.drawable.mainicon);
+            map.put("title", content[i]);
+            list.add(map);
+        }
+        return  list;
+    }
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragmentlearn, container, false);
@@ -126,7 +140,9 @@ public class LearnFragment extends Fragment{
         TextView emptyView = (TextView) view.findViewById(R.id.learnempty);
         listview.setEmptyView(emptyView);
 
-        if(nctt > 0) listadapter=new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, getcontentstr());
+        if(nctt > 0) listadapter = new SimpleAdapter(getActivity(), getData(),
+                R.layout.learnlistview, new String[] { "img", "title" },
+                new int[] { R.id.learnlistimg, R.id.learnlisttitle});
         listview.setAdapter(listadapter);
         SeekBar download = (SeekBar) view.findViewById(R.id.learnloadbar);
 

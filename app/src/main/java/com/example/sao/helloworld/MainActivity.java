@@ -20,7 +20,7 @@ import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity implements CountryFragment.Mylistener,
         BeisongFragment.Mylistener, FinishFragment.Mylistener, LearnFragment.Mylistener,
-        LoadFragment.Mylistener, MemoryFragment.Mylistener {
+        LoadFragment.Mylistener, MemoryFragment.Mylistener, LoadLoadFragment.Mylistener {
 
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements CountryFragment.M
     TextView titletext;
     ImageButton helper;
     String helpword = "";
-    String[] helpwordarr = new String[7];
+    String[] helpwordarr = new String[8];
     Stack<Integer> stack = new Stack<Integer>();
     public class helperlistener implements View.OnClickListener {
         public void onClick(View view) {
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements CountryFragment.M
                 "如果没有数据可以先使用测试导入~。知识点文件需要有一定格式，不然记忆猫是分不清哪个是问题，哪个是答案的"+
                 "（毕竟是喵星人233）。格式很简单，问题用？，答案用！标识一下就好，文件格式改为txt就可以导入了。"+
                 "如: wtf?什么鬼!なに?什么! 这样就可以导入2个知识点了。\n自动去重可以自动去除重复知识点，推荐勾上!";
-
+        helpwordarr[7] = "这里提供一些默认导入的数据，可以进行选择导入";
     }
 
 
@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements CountryFragment.M
         begin.setCustomAnimations(R.animator.fragment_slide_right_in, R.animator.fragment_slide_left_out,
                 R.animator.fragment_slide_left_in, R.animator.fragment_slide_right_out);
     }
-
-
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,5 +204,17 @@ public class MainActivity extends AppCompatActivity implements CountryFragment.M
 
         begin.replace(R.id.main, SF);
         begin.commit();
+    }
+    public void LoadFtoDLF(){
+        stack.add(7); changelayout(stack.peek());
+        FragmentTransaction begin = getFragmentManager().beginTransaction();
+        switchanime(begin);
+        begin.addToBackStack(null);
+        begin.replace(R.id.main, new LoadLoadFragment());
+        begin.commit();
+    }
+    public void DLFtoLF() {
+        onBackPressed();
+        onBackPressed();
     }
 }

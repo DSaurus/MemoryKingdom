@@ -35,12 +35,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:cacheColorHint="#00000000"
-                android:divider="@color/colorPrimaryDark"
-                android:dividerHeight="3dp"
-                android:scrollbars="none"
-                android:headerDividersEnabled="false"
-                android:footerDividersEnabled="true">
+                >
             </ListView>
 
         </FrameLayout>

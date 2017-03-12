@@ -60,9 +60,11 @@ public class LoadFragment extends Fragment{
     Switch loadtype;
     File location;
     String ESD = Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
+
     int newn, ndata;
     public interface Mylistener {
         public void loadFtoLF();
+        public void LoadFtoDLF();
     }
     public Mylistener listener;
     public void layoutinit() {
@@ -391,44 +393,9 @@ public class LoadFragment extends Fragment{
 
     public class testloadlistener implements View.OnClickListener{
         public void onClick(View view) {
-            txtname.setText("生化爸爸orz");
-            String learnclass = txtname.getText().toString();
-            rewritewhole(learnclass);
-            try {
-                String input = read(getResources().openRawResource(R.raw.shdata));
-                newn = transtoshdata(input);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            File file = new File(ESD);
-            file = new File(file, learnclass + ".txt");
-            if(!file.exists())
-            {
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                time_1 = admintime_1;
-                time_2 = admintime_2;
-                time_3 = admintime_3;
-                time_4 = admintime_4;
-            }
-            if(loadtype.isChecked())
-            {
-                try {
-                    String input = read(new FileInputStream(file));
-                    ndata = transtodata(input);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                for(int i = 0; i < ndata; i++) map.put(data[i].ques, i);
-            }
-            rewritedata(file);
-            listener.loadFtoLF();
+            listener.LoadFtoDLF();
         }
     }
-
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragmentload, container, false);
