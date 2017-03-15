@@ -1,13 +1,20 @@
 package com.example.sao.helloworld;
 
 import android.app.Fragment;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -22,7 +29,7 @@ import java.util.Date;
  */
 
 public class BeisongFragment extends Fragment implements View.OnClickListener{
-    long[] time_1 = new long[5], time_2 = new long[5], time_3 = new long[5], time_4 = new long[5];
+    long[] time_1 = new long[4], time_2 = new long[5], time_3 = new long[5];
     public int max(int a, int b){ return a < b ? b : a; }
     public int min(int a, int b){ return a < b ? a : b; }
     public class Data{
@@ -34,6 +41,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
     Data []data = new Data[1000];
     String learndata;
     String ESD =  Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
+    File learnfile, learncatfile, timefile;  //该学科的数据文件
     public Mylistener listener;
 
     //与activity进行通讯
@@ -41,12 +49,12 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
         public void BFtoFF(String learndata);
     }
 
-    //获得知识点等级需要的间隔时间
+
+    //获得知识点等级需要的间隔时间 315
     public long getleveltime(int k) {
-        if(k <= 5) return time_1[k-1];
-        if(k <= 10) return time_2[k-6];
-        if(k <= 15) return time_3[k-11];
-        if(k <= 20) return time_4[k-16];
+        if(k <= 4) return time_1[k-1];
+        if(k <= 9) return time_2[k-5];
+        if(k <= 14) return time_3[k-10];
         return (long)1e12;
     }
 
@@ -126,17 +134,12 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    //将str转化为data
+    //从str读取data 315
     public int transtodata(String str) {
         int n = 0;
+        if(str.equals("")) return 0;
         StringBuffer cur = new StringBuffer();
-        int start = 0;
-        for(int i = 0; i < 5; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_4[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        while(str.charAt(start) != '#') start++;
-        for(int i = start+1; i < str.length(); i++)
+        for(int i = 0; i < str.length(); i++)
         {
             char ch = str.charAt(i);
             if(ch == '?')
@@ -149,7 +152,7 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
                 data[n].ans = cur.toString();
                 cur = new StringBuffer();
                 int x = i+1;
-                data[n].flag = (int)getnumber(str, x, 1); x = (int)getnumber(str, x, 0);
+                data[n].flag = (int)getnumber(str, x, 1); x = (int) getnumber(str, x, 0);
                 data[n].level = (int)getnumber(str, x, 1); x = (int)getnumber(str, x, 0);
                 data[n].val = (int)getnumber(str, x, 1);   x = (int)getnumber(str, x, 0);
                 data[n].time = getnumber(str, x, 1);  x = (int)getnumber(str, x, 0);
@@ -163,18 +166,27 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
         }
         return n;
     }
+    //从str读取time 315
+    public void trantotime(String str){
+        if(str.equals("")) return;
+        int start = 0;
+        for(int i = 0; i < 4; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+    }
 
     //学习模式有关变量
     int nowx = 0;  //当前处于的序列的单词位置
-    int newn, typemode = 1, learnmode = 0, Qn, QQn, ndata;
+    int newn, learnmode = 0, Qn, QQn, ndata, ggn, ggkn;
     //typemode 新词和巩固          learnmode 提问和答案
     int[] Q = new int[2017], QQ = new int[2017]; //Q当前序列，QQ备用序列
 
     //layout设置
     View view;
-    TextView q, a, mode, texttime, level;
-    Button memory_1, memory_2, memory_3, memory_4;
-    File learnfile, learncatfile;  //该学科的数据文件
+    TextView q, a, mode, texttime, level, selectlevel;
+    Button memory_1, memory_2, memory_3, nextwordbutton;
+    ProgressBar beisongbar;
+
     public void layoutinit() {
         listener = (Mylistener) getActivity();
         mode = (TextView) view.findViewById(R.id.beisongMode);
@@ -183,22 +195,26 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
         a = (TextView) view.findViewById(R.id.Answer);
         level = (TextView) view.findViewById(R.id.beisonglevel);
         memory_1 = (Button) view.findViewById(R.id.memory_1); memory_2 = (Button) view.findViewById(R.id.memory_2);
-        memory_3 = (Button) view.findViewById(R.id.memory_3); memory_4 = (Button) view.findViewById(R.id.memory_4);
-        memory_1.setOnClickListener(this); memory_2.setOnClickListener(this);
-        memory_3.setOnClickListener(this); memory_4.setOnClickListener(this);
-        memory_1.setText("陌生"); memory_2.setText("有印象");
-        memory_3.setText("比较熟悉"); memory_4.setText("非常熟悉");
+        memory_3 = (Button) view.findViewById(R.id.memory_3);
+        nextwordbutton = (Button) view.findViewById(R.id.nextwordbutton);
+        memory_1.setOnClickListener(new memorylistener_1()); memory_1.setOnTouchListener(new memorylistener_1());
+        memory_2.setOnClickListener(new memorylistener_2()); memory_2.setOnTouchListener(new memorylistener_2());
+        memory_3.setOnClickListener(new memorylistener_3()); memory_3.setOnTouchListener(new memorylistener_3());
+        nextwordbutton.setOnClickListener(new nextwordbuttonlistener());
+        beisongbar = (ProgressBar) view.findViewById(R.id.beisongprogress);
+        selectlevel = (TextView) view.findViewById(R.id.selectlevel);
     }
 
     //获取并分析排序数据，并获得这次任务需要提问的单词
-    public void analysedata(File file) {
-        String input = " ";
+    public void analysedata() {
+        String input = " ", input2 = "";
         try {
-            input = read(new FileInputStream(file));
+            input = read(new FileInputStream(learnfile));
+            input2 = read(new FileInputStream(timefile));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ndata = transtodata(input);
+        ndata = transtodata(input); trantotime(input2);
         for(int i = 0; i < ndata; i++) data[i].calt = data[i].time + getleveltime(data[i].level);
         quickSort(data, 0, ndata-1);
         newn = (int)getnumber(getArguments().get("number")+"", 0, 1); //获得新词
@@ -207,12 +223,11 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
         for(int j = ndata-1; j >= i && newn > 0; j--, newn--)  Q[Qn++] = j;
     }
 
+
     //实时保存数据
-    public void savedata(File file) {
+    //将文件保存到learnfile中 315
+    public void savedata() {
         StringBuffer output = new StringBuffer();
-        output.append(numarraytostr(time_1)); output.append(numarraytostr(time_2));
-        output.append(numarraytostr(time_3)); output.append(numarraytostr(time_4));
-        output.append('#');
         for(int i = 0; i < ndata; i++)
         {
             output.append(data[i].ques); output.append('?');
@@ -224,7 +239,19 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
             output.append(data[i].begintime); output.append(" ");
         }
         try {
-            write(output.toString(), file);
+            write(output.toString(), learnfile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //将时间数据保存到timefile中 315
+    public void savetimedata(){
+        StringBuffer output = new StringBuffer();
+        output.append(numarraytostr(time_1)); output.append("\n");
+        output.append(numarraytostr(time_2)); output.append("\n");
+        output.append(numarraytostr(time_3)); output.append("\n");
+        try {
+            write(output.toString(), timefile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -241,16 +268,20 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    //获得队列里下一个最小的时间，返回的是在Q中的下标
+    //获得队列里下一个最小的时间，返回的是在Q中的下标  并统计当前进度
     public int getnext(int[] f, int n) {
         long tmin = (long)1e15;
         int k = -1;
+        ggn = ggkn = 0;
         for(int i = 0; i < n; i++){
-            if(data[f[i]].level <= 10)
-                if(tmin > data[f[i]].time + getleveltime(data[f[i]].level)){
+            if(data[f[i]].level <= 4) {
+                ggn++;
+                if (tmin > data[f[i]].time + getleveltime(data[f[i]].level)) {
                     tmin = data[f[i]].time + getleveltime(data[f[i]].level);
                     k = i;
                 }
+            }
+            if(data[f[i]].level > 1) ggkn++;
         }
         return k;
     }
@@ -311,33 +342,185 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
         } else
         {
             q.setTextSize(textsize(data[i].ques)); q.setText(delendl(data[i].ques));
-            a.setTextSize(textsize(data[i].ans)); a.setText(data[i].ans);
+            a.setText(data[i].ans);
             level.setText(("lv:"+data[i].level));
             if(data[i].flag == 0) texttime.setText("新知识");
             else texttime.setText((dateform(gettime() - data[i].time)+"  次数:"+data[i].val));
         }
     }
+    //按钮默认样式
+    public void buttonbackground_default() {
+        memory_1.setBackgroundResource(R.drawable.notpressedcathand);
+        memory_2.setBackgroundResource(R.drawable.notpressedcathand);
+        memory_3.setBackgroundResource(R.drawable.notpressedcathand);
+        selectlevel.setText("");
+    }
 
-    //ty = 0 提问页面的格式    ty = 1 答案页面的格式
-    public void layouttab(int ty) {
-        if(ty == 0)
-        {
-            memory_4.setText("非常熟悉");
-            memory_1.setVisibility(View.VISIBLE);
-            memory_2.setVisibility(View.VISIBLE);
-            memory_3.setVisibility(View.VISIBLE);
-            learnmode = 0;
-        } else
-        {
-            memory_4.setText("下一个");
-            memory_1.setVisibility(View.GONE);
-            memory_2.setVisibility(View.GONE);
-            memory_3.setVisibility(View.GONE);
+    public void nextwordtab() {
+        //learnmode 0 -> 鉴定  1 -> 巩固
+        int i = Q[nowx];
+        if(data[i].flag == 2) savecatdata(data[i].level, gettime() - data[i].begintime);
+        savedata();
+
+        if(nowx == Qn-1) {
             learnmode = 1;
+            Q = QQ; Qn = QQn;
+            mode.setText(("巩固模式：  进度 0/" + Qn));
+            beisongbar.setMax(Qn);
+        }
+        if(learnmode == 0){
+            nowx++; i = Q[nowx];
+            mode.setText(("鉴定模式:  进度 " + nowx + "/" + Qn));
+            beisongbar.setProgress(nowx);
+            datashow(i, 1);
+        }
+        if(learnmode == 1){
+            nowx = getnext(Q, Qn);
+            if(nowx == -1) { listener.BFtoFF(learndata); return; }
+            mode.setText(("巩固模式:  进度 " + (Qn-ggn) + "/" + ggkn + "/" + Qn));
+            beisongbar.setProgress(Qn-ggn);
+            beisongbar.setSecondaryProgress(ggkn);
+            i = Q[nowx];
+            datashow(i, 1);
         }
     }
 
+    public void nowwordtab() {
+        memory_1.setVisibility(View.GONE);
+        memory_2.setVisibility(View.GONE);
+        memory_3.setVisibility(View.GONE);
+        nextwordbutton.setVisibility(View.VISIBLE);
+        datashow(Q[nowx], 2);
+    }
+
+    public class nextwordbuttonlistener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            nextwordtab();
+            buttonbackground_default();
+            memory_1.setVisibility(View.VISIBLE);
+            memory_2.setVisibility(View.VISIBLE);
+            memory_3.setVisibility(View.VISIBLE);
+            nextwordbutton.setVisibility(View.GONE);
+        }
+    }
+
+    public class memorylistener_1 implements View.OnClickListener, View.OnTouchListener{
+        @Override
+        public void onClick(View view) {
+            int i = Q[nowx];
+            data[i].level = 1;
+            if(learnmode == 0) QQ[QQn++] = i;
+            data[i].val++;  data[i].time = gettime();
+            if(data[i].flag == 0){
+                data[i].begintime = gettime();
+                data[i].flag = 2;
+            }
+            nowwordtab();
+        }
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            datashow(Q[nowx], 1);
+            switch(motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    memory_1.setBackgroundResource(R.drawable.onecathand);
+                    selectlevel.setText("陌生"); selectlevel.setTextColor(Color.GRAY);
+                    break;
+                case MotionEvent.ACTION_UP: buttonbackground_default(); break;
+            }
+            return false;
+        }
+    }
+    public class memorylistener_2 implements View.OnClickListener, View.OnTouchListener{
+        @Override
+        public void onClick(View view) {
+            int i = Q[nowx];
+            if(learnmode == 0) {
+                if (data[i].level >= 5 && data[i].level <= 9) data[i].level++;
+                else if (data[i].level < 5) data[i].level = 5;
+                else if (data[i].level >= 10) data[i].level--;
+            } else{
+                data[i].level += 2;
+                data[i].level = min(data[i].level, 5);
+            }
+            if(data[i].flag == 0) {
+                data[i].flag = 1;
+                data[i].level = 9;
+            }
+            data[i].val++;  data[i].time = gettime();
+            nextwordtab();
+        }
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    memory_1.setBackgroundResource(R.drawable.twocathand);
+                    memory_2.setBackgroundResource(R.drawable.twocathand);
+                    datashow(Q[nowx], 2);
+                    selectlevel.setText("比较熟悉"); selectlevel.setTextColor(Color.parseColor("#FFA500"));
+                    break;
+                case MotionEvent.ACTION_UP: buttonbackground_default(); break;
+            }
+            return false;
+        }
+    }
+    public class memorylistener_3 implements View.OnClickListener, View.OnTouchListener{
+        @Override
+        public void onClick(View view) {
+            int i = Q[nowx];
+            if(learnmode == 0) {
+                if (data[i].level >= 10 && data[i].level <= 14) data[i].level++;
+                else if (data[i].level <= 9) data[i].level = 10;
+            } else {
+                data[i].level += 3;
+                data[i].level = min(data[i].level, 5);
+            }
+            if(data[i].flag == 0) {
+                data[i].flag = 1;
+                data[i].level = 14;
+            }
+            data[i].val++;  data[i].time = gettime();
+            nextwordtab();
+        }
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            switch(motionEvent.getAction()) {
+               case MotionEvent.ACTION_DOWN:
+                   memory_1.setBackgroundResource(R.drawable.threecathand);
+                   memory_2.setBackgroundResource(R.drawable.threecathand);
+                   memory_3.setBackgroundResource(R.drawable.threecathand);
+                   selectlevel.setText("非常熟悉"); selectlevel.setTextColor(Color.parseColor("#FA8072"));
+                   datashow(Q[nowx], 2);
+                   break;
+                case MotionEvent.ACTION_UP: buttonbackground_default();break;
+            }
+            return false;
+        }
+    }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.beisong, container, false);
+
+        learndata = getArguments().get("data")+"";
+        learnfile = new File(ESD + learndata + ".txt");
+        learncatfile = new File(ESD + learndata + "cat.txt");
+        timefile = new File(ESD + learndata + "time.txt");
+        layoutinit();
+        buttonbackground_default();
+        analysedata();
+        datashow(Q[0], 1);
+        mode.setText(("鉴定模式:  进度 " + nowx + "/" + Qn)); mode.setTextColor(Color.BLACK);
+        beisongbar.setMax(Qn);
+        memory_1.setVisibility(View.VISIBLE);
+        memory_2.setVisibility(View.VISIBLE);
+        memory_3.setVisibility(View.VISIBLE);
+        nextwordbutton.setVisibility(View.GONE);
+
+        return view;
+    }
+
     public void onClick(View view) {
+        /*
         int i = Q[nowx];
         if(learnmode == 1 && view.getId() == R.id.memory_4)  //点击下一个并展示新的单词
         {
@@ -415,22 +598,6 @@ public class BeisongFragment extends Fragment implements View.OnClickListener{
         data[i].time = gettime();
         layouttab(1);
         datashow(i, 2);
-        savedata(learnfile);
-
-    }
-
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.beisong, container, false);
-
-        learndata = getArguments().get("data")+"";
-        learnfile = new File(ESD + learndata + ".txt");
-        learncatfile = new File(ESD + learndata + "cat.txt");
-
-        layoutinit();
-        analysedata(learnfile);
-        datashow(Q[0], 1);
-        layouttab(0);
-        mode.setText("鉴定");
-        return view;
+        savedata(learnfile);*/
     }
 }

@@ -33,11 +33,10 @@ public class LoadLoadFragment extends Fragment {
     SimpleAdapter listadapter = null;
     ListView listview;
     int nctt;
-    public long[] admintime_1 = {10, 20, 30, 60, 120};
-    public long[] admintime_2 = {120, 240, 240, 240, 300};
-    public long[] admintime_3 = {43200, 86400, 86400, 172800, 172800};
-    public long[] admintime_4 = {604800, 604800, 1209600, 2419200, 2419200};
-    long[] time_1 = new long[5], time_2 = new long[5], time_3 = new long[5], time_4 = new long[5];
+    public long[] admintime_1 = {120, 240, 240, 240, 300};
+    public long[] admintime_2 = {43200, 86400, 86400, 172800, 172800};
+    public long[] admintime_3 = {604800, 604800, 1209600, 2419200, 2419200};
+    long[] time_1 = new long[4], time_2 = new long[5], time_3 = new long[5];
     public class Data{
         public String ques, ans;
         public int flag;
@@ -50,6 +49,8 @@ public class LoadLoadFragment extends Fragment {
     Map<String, Integer> map = new HashMap<>();
     Map<String, Integer> defaultmap = new HashMap<>();
     String ESD = Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
+    String learndata;
+    File learnfile, timefile;
 
     public interface Mylistener {
         public void DLFtoLF();
@@ -77,11 +78,10 @@ public class LoadLoadFragment extends Fragment {
         for(int i = 0; i < a.length; i++) temp.append(a[i]+" "); temp.append("\n");
         return temp.toString();
     }
-    public void savedata(File file) {
+
+    //将文件保存到learnfile中 315
+    public void savedata() {
         StringBuffer output = new StringBuffer();
-        output.append(numarraytostr(time_1)); output.append(numarraytostr(time_2));
-        output.append(numarraytostr(time_3)); output.append(numarraytostr(time_4));
-        output.append('#');
         for(int i = 0; i < ndata; i++)
         {
             output.append(data[i].ques); output.append('?');
@@ -93,12 +93,26 @@ public class LoadLoadFragment extends Fragment {
             output.append(data[i].begintime); output.append(" ");
         }
         try {
-            write(output.toString(), file);
+            write(output.toString(), learnfile);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void rewritedata(File file) {
+    //将时间数据保存到timefile中 315
+    public void savetimedata(){
+        StringBuffer output = new StringBuffer();
+        output.append(numarraytostr(time_1)); output.append("\n");
+        output.append(numarraytostr(time_2)); output.append("\n");
+        output.append(numarraytostr(time_3)); output.append("\n");
+        try {
+            write(output.toString(), timefile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //添加data，重复的问题更新答案（自动去重）,并添加时间 315
+    public void rewritedata() {
         for(int i = 0; i < newn; i++)
         {
             if(map.containsKey(newdata[i].ques))
@@ -106,8 +120,9 @@ public class LoadLoadFragment extends Fragment {
             else
                 data[ndata++] = newdata[i];
         }
-        savedata(file);
+        savedata(); savetimedata();
     }
+
     public void rewritewhole(String str) {
         File file = new File(ESD + "_learn.txt");
         if(!file.exists()) try {
@@ -146,17 +161,13 @@ public class LoadLoadFragment extends Fragment {
         if(ty == 1) return ans;
         return y+1;
     }
+
+    //从str读取data 315
     public int transtodata(String str) {
         int n = 0;
         if(str.equals("")) return 0;
         StringBuffer cur = new StringBuffer();
-        int start = 0;
-        for(int i = 0; i < 5; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_4[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        while(str.charAt(start) != '#') start++;
-        for(int i = start+1; i < str.length(); i++)
+        for(int i = 0; i < str.length(); i++)
         {
             char ch = str.charAt(i);
             if(ch == '?')
@@ -176,13 +187,22 @@ public class LoadLoadFragment extends Fragment {
                 data[n].begintime = getnumber(str, x, 1); x = (int)getnumber(str, x, 0);
                 n++;
                 i = x;
-            } else if(ch != ' ')
+            } else
             {
                 cur.append(ch);
             }
         }
         return n;
     }
+    //从str读取time 315
+    public void trantotime(String str){
+        if(str.equals("")) return;
+        int start = 0;
+        for(int i = 0; i < 4; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+    }
+
     public int transtonewdata(String str) {
         int n = 0;
         StringBuffer temp = new StringBuffer();
@@ -215,40 +235,61 @@ public class LoadLoadFragment extends Fragment {
 
 
     public void defaultloadinit() {
-        defaultmap.put("大学英语book2", R.raw.english_university_book2);
+        defaultmap.put("Englishbook2", R.raw.english_university_book2);
+        defaultmap.put("明天会更好", R.raw.song_word);
     }
 
     public void Defaultload(int rawid, String name) {
-        String learnclass = name;
-        rewritewhole(learnclass);
+        //写入新目录
+        learndata = name;
+        rewritewhole(learndata);
+
+        //读取用户数据
         try {
             String input = read(getResources().openRawResource(rawid));
             newn = transtonewdata(input);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        File file = new File(ESD);
-        file = new File(file, learnclass + ".txt");
-        if(!file.exists())
-        {
+
+        //读取旧数据，并更新
+        learnfile = new File(new File(ESD), learndata + ".txt");
+        timefile = new File(new File(ESD), learndata + "time.txt");
+        if(!learnfile.exists()) {
             try {
-                file.createNewFile();
+                learnfile.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        if(!timefile.exists()) {
             time_1 = admintime_1;
             time_2 = admintime_2;
             time_3 = admintime_3;
-            time_4 = admintime_4;
+            try {
+                timefile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else{
+            String input = null;
+            try {
+                input = read(new FileInputStream(timefile));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            trantotime(input);
         }
         try {
-            String input = read(new FileInputStream(file));
+            String input = read(new FileInputStream(learnfile));
             ndata = transtodata(input);
         } catch (IOException e) {
             e.printStackTrace();
         }
         for(int i = 0; i < ndata; i++) map.put(data[i].ques, i);
-        rewritedata(file);
+
+        //写入新数据
+        rewritedata();
     }
 
     public int transtocontent(String str) {

@@ -30,19 +30,10 @@ import static java.lang.StrictMath.max;
 public class SettimeFragment extends Fragment {
     View view;
     String learndata;
-    File learnfile;
+    File timefile;
     String ESD = Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
-    long[] time_1 = new long[5], time_2 = new long[5], time_3 = new long[5], time_4 = new long[5];
+    long[] time_1 = new long[4], time_2 = new long[5], time_3 = new long[5];
     long[] timemin = new long[5], timemax = new long[5], nowtime = new long[5];
-    public class Data {
-        public String ques, ans;
-        public int flag;
-        public int level, val;
-        public long time, begintime;
-        //flag level val time begintime
-    }
-
-    Data[] data = new Data[2017];
     TabHost tablearn;
     TextView[] settimetext = new TextView[5];
     SeekBar[] settimebar = new SeekBar[5];
@@ -97,56 +88,6 @@ public class SettimeFragment extends Fragment {
         if (ty == 1) return ans;
         return y + 1;
     }
-    public int transtodata(String str) {
-        int n = 0;
-        if (str.equals("")) return 0;
-        StringBuffer cur = new StringBuffer();
-        int start = 0;
-        for (int i = 0; i < 5; i++) {
-            time_1[i] = getnumber(str, start, 1);
-            start = (int) getnumber(str, start, 0);
-        }
-        for (int i = 0; i < 5; i++) {
-            time_2[i] = getnumber(str, start, 1);
-            start = (int) getnumber(str, start, 0);
-        }
-        for (int i = 0; i < 5; i++) {
-            time_3[i] = getnumber(str, start, 1);
-            start = (int) getnumber(str, start, 0);
-        }
-        for (int i = 0; i < 5; i++) {
-            time_4[i] = getnumber(str, start, 1);
-            start = (int) getnumber(str, start, 0);
-        }
-        while (str.charAt(start) != '#') start++;
-        for (int i = start + 1; i < str.length(); i++) {
-            char ch = str.charAt(i);
-            if (ch == '?') {
-                if (data[n] == null) data[n] = new Data();
-                data[n].ques = cur.toString();
-                cur = new StringBuffer();
-            } else if (ch == '!') {
-                data[n].ans = cur.toString();
-                cur = new StringBuffer();
-                int x = i + 1;
-                data[n].flag = (int) getnumber(str, x, 1);
-                x = (int) getnumber(str, x, 0);
-                data[n].level = (int) getnumber(str, x, 1);
-                x = (int) getnumber(str, x, 0);
-                data[n].val = (int) getnumber(str, x, 1);
-                x = (int) getnumber(str, x, 0);
-                data[n].time = getnumber(str, x, 1);
-                x = (int) getnumber(str, x, 0);
-                data[n].begintime = getnumber(str, x, 1);
-                x = (int) getnumber(str, x, 0);
-                n++;
-                i = x;
-            } else if (ch != ' ') {
-                cur.append(ch);
-            }
-        }
-        return n;
-    }
     public void write(String output, File file) throws IOException {
         FileOutputStream fis = new FileOutputStream(file);
         byte[] words = output.getBytes();
@@ -158,32 +99,32 @@ public class SettimeFragment extends Fragment {
         for(int i = 0; i < a.length; i++) temp.append(a[i]+" "); temp.append("\n");
         return temp.toString();
     }
-    public void savedata(File file) {
+
+    //将时间数据保存到timefile中 315
+    public void savetimedata(){
         StringBuffer output = new StringBuffer();
-        output.append(numarraytostr(time_1)); output.append(numarraytostr(time_2));
-        output.append(numarraytostr(time_3)); output.append(numarraytostr(time_4));
-        output.append('#');
-        for(int i = 0; i < ndata; i++)
-        {
-            output.append(data[i].ques); output.append('?');
-            output.append(data[i].ans); output.append('!');
-            output.append(data[i].flag); output.append(" ");
-            output.append(data[i].level); output.append(" ");
-            output.append(data[i].val); output.append(" ");
-            output.append(data[i].time); output.append(" ");
-            output.append(data[i].begintime); output.append(" ");
-        }
+        output.append(numarraytostr(time_1)); output.append("\n");
+        output.append(numarraytostr(time_2)); output.append("\n");
+        output.append(numarraytostr(time_3)); output.append("\n");
         try {
-            write(output.toString(), file);
+            write(output.toString(), timefile);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    //从str读取time 315
+    public void trantotime(String str){
+        if(str.equals("")) return;
+        int start = 0;
+        for(int i = 0; i < 4; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+    }
 
     public void analysetimedata() {
         try {
-            String input = read(new FileInputStream(learnfile));
-            ndata = transtodata(input);
+            String input = read(new FileInputStream(timefile));
+            trantotime(input);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -237,18 +178,16 @@ public class SettimeFragment extends Fragment {
             int x = getbtid(view.getId());
             resettime(x);
             switch (nowsetlayout) {
-                case 1:time_1 = nowtime; break;
                 case 2:time_2 = nowtime; break;
                 case 3:time_3 = nowtime; break;
-                case 4:time_4 = nowtime; break;
             }
-            savedata(learnfile);
+            savetimedata();
         }
     }
 
     public void settimelayout(long[] settime) {
         nowtime = settime;
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < settime.length; i++)
         {
             settimetext[i].setText("第"+(i+1)+"阶段:  "+ dateform(nowtime[i]));
             timemin[i] = max(1, nowtime[i]/2); timemax[i] = min((long)1e9, nowtime[i]*2);
@@ -262,17 +201,11 @@ public class SettimeFragment extends Fragment {
     public class Learntablistener implements TabHost.OnTabChangeListener {
         public void onTabChanged(String s) {
             if(s.equals("tab1")){
-                settimelayout(time_1);
-                nowsetlayout = 1;
-            } else if(s.equals("tab2")){
                 settimelayout(time_2);
                 nowsetlayout = 2;
-            } else if(s.equals("tab3")){
+            } else if(s.equals("tab2")){
                 settimelayout(time_3);
                 nowsetlayout = 3;
-            } else if(s.equals("tab4")){
-                settimelayout(time_4);
-                nowsetlayout = 4;
             }
         }
     }
@@ -300,18 +233,16 @@ public class SettimeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragmentsettime, container, false);
         learndata = getArguments().get("data")+"";
-        learnfile = new File(ESD + learndata+ ".txt");
+        timefile = new File(ESD + learndata+ "time.txt");
         analysetimedata();
         layoutinit();
         tablearn = (TabHost) view.findViewById(R.id.learntab);
         tablearn.setup();
         tablearn.setOnTabChangedListener(new Learntablistener());
-        tablearn.addTab(tablearn.newTabSpec("tab1").setIndicator("陌生").setContent(R.id.leveltype1));
-        tablearn.addTab(tablearn.newTabSpec("tab2").setIndicator("有印象").setContent(R.id.leveltype1));
-        tablearn.addTab(tablearn.newTabSpec("tab3").setIndicator("比较熟悉").setContent(R.id.leveltype1));
-        tablearn.addTab(tablearn.newTabSpec("tab4").setIndicator("非常熟悉").setContent(R.id.leveltype1));
+        tablearn.addTab(tablearn.newTabSpec("tab1").setIndicator("比较熟悉").setContent(R.id.leveltype1));
+        tablearn.addTab(tablearn.newTabSpec("tab2").setIndicator("非常熟悉").setContent(R.id.leveltype1));
         tablearn.setCurrentTab(1); tablearn.setCurrentTab(0);
-        settimelayout(time_1); nowsetlayout = 1;
+        settimelayout(time_2); nowsetlayout = 2;
         return view;
     }
 }

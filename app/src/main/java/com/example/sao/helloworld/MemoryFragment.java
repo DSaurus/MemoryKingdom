@@ -32,8 +32,6 @@ import lecho.lib.hellocharts.view.LineChartView;
  */
 
 public class MemoryFragment extends Fragment {
-
-    long[] time_1 = new long[5], time_2 = new long[5], time_3 = new long[5], time_4 = new long[5];
     /*
             1min 15min 30min 1h
             12h 1d 3d 7d
@@ -97,42 +95,6 @@ public class MemoryFragment extends Fragment {
         }
         if(ty == 1) return (y == -1) ? -1 : ans;
         return (y == -1) ? str.length() : y+1;
-    }
-    public int transtodata(String str) {
-        int n = 0;
-        StringBuffer cur = new StringBuffer();
-        int start = 0;
-        for(int i = 0; i < 5; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_4[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        while(str.charAt(start) != '#') start++;
-        for(int i = start+1; i < str.length(); i++)
-        {
-            char ch = str.charAt(i);
-            if(ch == '?')
-            {
-                if(data[n] == null) data[n] = new Data();
-                data[n].ques = cur.toString();
-                cur = new StringBuffer();
-            } else if(ch == '!')
-            {
-                data[n].ans = cur.toString();
-                cur = new StringBuffer();
-                int x = i+1;
-                data[n].flag = (int)getnumber(str, x, 1); x = (int)getnumber(str, x, 0);
-                data[n].level = (int)getnumber(str, x, 1); x = (int)getnumber(str, x, 0);
-                data[n].val = (int)getnumber(str, x, 1);   x = (int)getnumber(str, x, 0);
-                data[n].time = getnumber(str, x, 1);  x = (int)getnumber(str, x, 0);
-                data[n].begintime = getnumber(str, x, 1); x = (int)getnumber(str, x, 0);
-                n++;
-                i = x;
-            } else
-            {
-                cur.append(ch);
-            }
-        }
-        return n;
     }
     public void transtocatdata(String str){
         int n = 0, x = 0;
@@ -213,11 +175,12 @@ public class MemoryFragment extends Fragment {
         transtotabledata();
         rewritecat(learncatfile);
         List<PointValue> tpoint = new ArrayList<PointValue>();
-        tpoint.add(new PointValue(0, 1));
+        tpoint.add(new PointValue(-1, 1));
         for(int i = 0; i < ntable; i++)
         {
             if(tablen[i] == 0) continue;
             tpoint.add(new PointValue((float)(i+tabledata[i]/time_table[i]), (float)tablelv[i]));
+            Log.i("wtf", (float)i+tabledata[i]/time_table[i]+"");
         }
         Line line = new Line(tpoint).setColor(Color.parseColor("#FFCD41"));
         List<Line> lines = new ArrayList<>();
@@ -260,7 +223,7 @@ public class MemoryFragment extends Fragment {
         linechart.setLineChartData(linedata);
 
         Viewport v = new Viewport(linechart.getMaximumViewport());
-        v.left = 0; v.right= 7;
+        v.left = (float)-1; v.right= 10;
         linechart.setCurrentViewport(v);
     }
 

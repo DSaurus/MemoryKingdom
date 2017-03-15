@@ -38,11 +38,10 @@ import java.util.Map;
 
 public class LoadFragment extends Fragment{
     View view;
-    public long[] admintime_1 = {10, 20, 30, 60, 120};
-    public long[] admintime_2 = {120, 240, 240, 240, 300};
-    public long[] admintime_3 = {43200, 86400, 86400, 172800, 172800};
-    public long[] admintime_4 = {604800, 604800, 1209600, 2419200, 2419200};
-    long[] time_1 = new long[5], time_2 = new long[5], time_3 = new long[5], time_4 = new long[5];
+    public long[] admintime_1 = {120, 240, 240, 240, 300};
+    public long[] admintime_2 = {43200, 86400, 86400, 172800, 172800};
+    public long[] admintime_3 = {604800, 604800, 1209600, 2419200, 2419200};
+    long[] time_1 = new long[4], time_2 = new long[5], time_3 = new long[5];
     public class Data{
         public String ques, ans;
         public int flag;
@@ -60,6 +59,8 @@ public class LoadFragment extends Fragment{
     Switch loadtype;
     File location;
     String ESD = Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
+    String learndata;
+    File learnfile, timefile;
 
     int newn, ndata;
     public interface Mylistener {
@@ -85,6 +86,12 @@ public class LoadFragment extends Fragment{
         fis.close(); outstream.close();
         return outstream.toString();
     }
+    public void write(String output, File file) throws IOException {
+        FileOutputStream fis = new FileOutputStream(file);
+        byte[] words = output.getBytes();
+        fis.write(words);
+        fis.close();
+    }
 
     //读取用户提供的文件
     public String readuserload(InputStream fis) throws IOException {
@@ -99,6 +106,11 @@ public class LoadFragment extends Fragment{
         return ans.toString();
     }
 
+    public String numarraytostr(long []a) {
+        StringBuffer temp = new StringBuffer();
+        for(int i = 0; i < a.length; i++) temp.append(a[i]+" "); temp.append("\n");
+        return temp.toString();
+    }
     public long getnumber(String str, int x, int ty) {
         long ans = 0, y = 0;
         boolean f = false;
@@ -114,18 +126,13 @@ public class LoadFragment extends Fragment{
         return y+1;
     }
 
-    //屏蔽空格，从str读取data
+
+    //从str读取data 315
     public int transtodata(String str) {
         int n = 0;
         if(str.equals("")) return 0;
         StringBuffer cur = new StringBuffer();
-        int start = 0;
-        for(int i = 0; i < 5; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_4[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        while(str.charAt(start) != '#') start++;
-        for(int i = start+1; i < str.length(); i++)
+        for(int i = 0; i < str.length(); i++)
         {
             char ch = str.charAt(i);
             if(ch == '?')
@@ -145,14 +152,21 @@ public class LoadFragment extends Fragment{
                 data[n].begintime = getnumber(str, x, 1); x = (int)getnumber(str, x, 0);
                 n++;
                 i = x;
-            } else if(ch != ' ')
+            } else
             {
                 cur.append(ch);
             }
         }
         return n;
     }
-
+    //从str读取time 315
+    public void trantotime(String str){
+        if(str.equals("")) return;
+        int start = 0;
+        for(int i = 0; i < 4; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+    }
     //屏蔽空格，从str中读取目录
     public void transtocontent(String str) {
         nctt = 0;
@@ -194,43 +208,6 @@ public class LoadFragment extends Fragment{
             e.printStackTrace();
         }
     }
-    public void write(String output, File file) throws IOException {
-        FileOutputStream fis = new FileOutputStream(file);
-        byte[] words = output.getBytes();
-        fis.write(words);
-        fis.close();
-    }
-
-    //test
-    public int transtoshdata(String str) {
-        int n = 0;
-        StringBuffer temp = new StringBuffer();
-        for(int i = 0; i < str.length(); i++)
-        {
-            char ch = str.charAt(i);
-            if(ch == '）')
-            {
-                newdata[n++].ques = temp.toString();
-                temp = new StringBuffer();
-            } else if(ch == '（')
-            {
-                if(newdata[n] == null) newdata[n] = new Data();
-                newdata[n].ans = temp.toString();
-                temp = new StringBuffer();
-            } else
-            {
-                temp.append(ch);
-            }
-        }
-        for(int i = 0; i < n; i++) {
-            newdata[i].flag = 0;
-            newdata[i].level = 1;
-            newdata[i].val = 0;
-            newdata[i].time = (long)1e12;
-            newdata[i].begintime = 0;
-        }
-        return n;
-    }
 
     //从用户提供的str中读取新数据（并初始化）
     public int transtonewdata(String str) {
@@ -262,18 +239,11 @@ public class LoadFragment extends Fragment{
         }
         return n;
     }
-    public String numarraytostr(long []a) {
-        StringBuffer temp = new StringBuffer();
-        for(int i = 0; i < a.length; i++) temp.append(a[i]+" "); temp.append("\n");
-        return temp.toString();
-    }
 
-    //将文件保存到file中
-    public void savedata(File file) {
+
+    //将文件保存到learnfile中 315
+    public void savedata() {
         StringBuffer output = new StringBuffer();
-        output.append(numarraytostr(time_1)); output.append(numarraytostr(time_2));
-        output.append(numarraytostr(time_3)); output.append(numarraytostr(time_4));
-        output.append('#');
         for(int i = 0; i < ndata; i++)
         {
             output.append(data[i].ques); output.append('?');
@@ -285,14 +255,25 @@ public class LoadFragment extends Fragment{
             output.append(data[i].begintime); output.append(" ");
         }
         try {
-            write(output.toString(), file);
+            write(output.toString(), learnfile);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    //添加data，重复的问题更新答案（自动去重）
-    public void rewritedata(File file) {
+    //将时间数据保存到timefile中 315
+    public void savetimedata(){
+        StringBuffer output = new StringBuffer();
+        output.append(numarraytostr(time_1)); output.append("\n");
+        output.append(numarraytostr(time_2)); output.append("\n");
+        output.append(numarraytostr(time_3)); output.append("\n");
+        try {
+            write(output.toString(), timefile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //添加data，重复的问题更新答案（自动去重）,并添加时间 315
+    public void rewritedata() {
         for(int i = 0; i < newn; i++)
         {
             if(map.containsKey(newdata[i].ques))
@@ -300,11 +281,12 @@ public class LoadFragment extends Fragment{
             else
                 data[ndata++] = newdata[i];
         }
-        savedata(file);
+        savedata(); savetimedata();
     }
 
     public class loadconfirmlistener implements View.OnClickListener {
         public void onClick(View view) {
+            //非法操作
             if(txtname.getText().toString().length() == 0)
             {
                 Toast.makeText(getActivity(), "学科名是什么啊", Toast.LENGTH_SHORT).show();
@@ -315,39 +297,61 @@ public class LoadFragment extends Fragment{
                 Toast.makeText(getActivity(), "找不到文件怎么破", Toast.LENGTH_SHORT).show();
                 return;
             }
-            String learnclass = txtname.getText().toString();
-            rewritewhole(learnclass);
+
+            //写入新目录
+            learndata = txtname.getText().toString();
+            rewritewhole(learndata);
+
+            //读取用户数据
             try {
                 String input = readuserload(new FileInputStream(location));
                 newn = transtonewdata(input);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            File file = new File(ESD);
-            file = new File(file, learnclass + ".txt");
-            if(!file.exists())
-            {
+
+            //读取旧数据，并更新
+            learnfile = new File(new File(ESD), learndata + ".txt");
+            timefile = new File(new File(ESD), learndata + "time.txt");
+            if(!learnfile.exists()) {
                 try {
-                    file.createNewFile();
+                    learnfile.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+            if(!timefile.exists()) {
                 time_1 = admintime_1;
                 time_2 = admintime_2;
                 time_3 = admintime_3;
-                time_4 = admintime_4;
+                try {
+                    timefile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else{
+                String input = null;
+                try {
+                    input = read(new FileInputStream(timefile));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                trantotime(input);
             }
             if(loadtype.isChecked())
             {
                 try {
-                    String input = read(new FileInputStream(file));
+                    String input = read(new FileInputStream(learnfile));
                     ndata = transtodata(input);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 for(int i = 0; i < ndata; i++) map.put(data[i].ques, i);
             }
-            rewritedata(file);
+
+            //写入新数据
+            rewritedata();
             listener.loadFtoLF();
         }
     }
@@ -391,7 +395,7 @@ public class LoadFragment extends Fragment{
         }
     }
 
-    public class testloadlistener implements View.OnClickListener{
+    public class Defaultloadlistener implements View.OnClickListener{
         public void onClick(View view) {
             listener.LoadFtoDLF();
         }
@@ -404,8 +408,8 @@ public class LoadFragment extends Fragment{
         loadconfirm.setOnClickListener(new loadconfirmlistener());
         loadbutton.setOnClickListener(new loadbuttonlistener());
 
-        Button testload = (Button) view.findViewById(R.id.testloadbt);
-        testload.setOnClickListener(new testloadlistener());
+        Button defaultload = (Button) view.findViewById(R.id.testloadbt);
+        defaultload.setOnClickListener(new Defaultloadlistener());
         return view;
     }
 }

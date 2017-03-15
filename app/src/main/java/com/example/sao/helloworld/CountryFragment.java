@@ -34,11 +34,7 @@ import lecho.lib.hellocharts.view.PieChartView;
  */
 
 public class CountryFragment extends Fragment {
-    public int[] admintime_1 = {10, 20, 30, 60, 120},
-            admintime_2 = {120, 240, 240, 240, 300},
-            admintime_3 = {43200, 86400, 86400, 172800, 172800},
-            admintime_4 = {604800, 604800, 1209600, 2419200, 2419200};
-    long[] time_1 = new long[5], time_2 = new long[5], time_3 = new long[5], time_4 = new long[5];
+    long[] time_1 = new long[4], time_2 = new long[5], time_3 = new long[5];
     int nlearn = 0;
     public class Data{
         public String ques, ans;
@@ -49,7 +45,7 @@ public class CountryFragment extends Fragment {
     }
     Data[] data = new Data[2017];
     String learndata = null;
-    File learnfile;
+    File learnfile, timefile;
     String ESD =  Environment.getExternalStorageDirectory().getPath()+"/MemoryPalace/";
     public int max(int a, int b) { return a < b ? b : a; }
     public float dmax(float a, float b) { return a < b ? b : a; }
@@ -83,27 +79,17 @@ public class CountryFragment extends Fragment {
         byte[] data = outstream.toByteArray();
         return new String(data);
     }
-    //将数组转换成string
-    public String numarraytostr(int []a)
-    {
-        StringBuffer temp = new StringBuffer();
-        for(int i = 0; i < a.length; i++) temp.append(a[i]+" "); temp.append("\n");
-        return temp.toString();
-    }
 
-    //获得知识点等级需要的间隔时间
-    public long getleveltime(int k)
-    {
-        if(k <= 5) return time_1[k-1];
-        if(k <= 10) return time_2[k-6];
-        if(k <= 15) return time_3[k-11];
-        if(k <= 20) return time_4[k-16];
+    //获得知识点等级需要的间隔时间 315
+    public long getleveltime(int k) {
+        if(k <= 4) return time_1[k-1];
+        if(k <= 9) return time_2[k-5];
+        if(k <= 14) return time_3[k-10];
         return (long)1e12;
     }
 
     //从字符串获得从x位置的第一个数字  ty = 1 返回答案， ty = 0返回下一个数字的出现位置
-    public long getnumber(String str, int x, int ty)
-    {
+    public long getnumber(String str, int x, int ty) {
         long ans = 0, y = 0;
         boolean f = false;
         for(int i = x; i < str.length(); i++)
@@ -118,18 +104,12 @@ public class CountryFragment extends Fragment {
         return y+1;
     }
 
-    //将str转化为data
-    public int transtodata(String str)
-    {
+    //从str读取data 315
+    public int transtodata(String str) {
         int n = 0;
+        if(str.equals("")) return 0;
         StringBuffer cur = new StringBuffer();
-        int start = 0;
-        for(int i = 0; i < 5; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        for(int i = 0; i < 5; i++) { time_4[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
-        while(str.charAt(start) != '#') start++;
-        for(int i = start+1; i < str.length(); i++)
+        for(int i = 0; i < str.length(); i++)
         {
             char ch = str.charAt(i);
             if(ch == '?')
@@ -156,11 +136,18 @@ public class CountryFragment extends Fragment {
         }
         return n;
     }
+    //从str读取time 315
+    public void trantotime(String str){
+        if(str.equals("")) return;
+        int start = 0;
+        for(int i = 0; i < 4; i++) { time_1[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_2[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+        for(int i = 0; i < 5; i++) { time_3[i] = getnumber(str, start, 1); start = (int)getnumber(str, start, 0); }
+    }
 
     //通过滑动条获取单词量
     TextView barword;
-    public class Wordnumlistener implements SeekBar.OnSeekBarChangeListener
-    {
+    public class Wordnumlistener implements SeekBar.OnSeekBarChangeListener {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -198,21 +185,18 @@ public class CountryFragment extends Fragment {
     }
 
     //切换到memoryline页面
-    public class Memorylistener implements View.OnClickListener
-    {
+    public class Memorylistener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
             listener.CFtoMF(learndata);
         }
     }
 
-    public void piechartdata(int n1, int n2, int n3, int n4)
-    {
+    public void piechartdata(int n1, int n2, int n3) {
         datachartval.clear();
         datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n1), Color.GRAY));
-        datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n2), Color.BLUE));
-        datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n3), Color.parseColor("#FF9900")));
-        datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n4), Color.RED));
+        datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n2), Color.parseColor("#FF9900")));
+        datachartval.add(new SliceValue(dmax((float) 0.0001, (float)n3), Color.RED));
 
         datachart = new PieChartData();
         datachart.setHasLabels(true);//显示表情
@@ -232,8 +216,7 @@ public class CountryFragment extends Fragment {
         datachartview.setCircleFillRatio(1f);//设置饼图大小
     }
 
-    public void newpiechartdata(int n1, int n2, int n3)
-    {
+    public void newpiechartdata(int n1, int n2, int n3) {
         newdatachartval.clear();
         newdatachartval.add(new SliceValue(dmax((float) 0.0001, (float)n1), Color.GRAY));
         newdatachartval.add(new SliceValue(dmax((float) 0.0001, (float)n2), Color.BLUE));
@@ -258,21 +241,21 @@ public class CountryFragment extends Fragment {
     }
 
     //分析当前数据  获得学习单词量
-    public void analysedata(File file)
-    {
-        String input = "";
+    public void analysedata() {
+        String input = "", input2 = "";
         try {
-            input = read(new FileInputStream(file));
+            input = read(new FileInputStream(learnfile));
+            input2 = read(new FileInputStream(timefile));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int n = transtodata(input), n1, n2, n3, n4, newn; newn = nlearn = n1 = n2 = n3 = n4 = 0;
+        int n = transtodata(input), n1, n2, n3, newn; newn = nlearn = n1 = n2 = n3 = 0;
+        trantotime(input2);
         for(int i = 0; i < n; i++)
         {
-            if(data[i].level <= 5) n1++;
-            else if(data[i].level <= 10) n2++;
-            else if(data[i].level <= 15) n3++;
-            else n4++;
+            if(data[i].level <= 4) n1++;
+            else if(data[i].level <= 9) n2++;
+            else n3++;
             if(data[i].time + getleveltime(data[i].level) < new Date().getTime()/1000) nlearn++;
             if(data[i].flag == 0) newn++;
         }
@@ -282,7 +265,7 @@ public class CountryFragment extends Fragment {
         seekbar.setMax(newn*10);
         seekbar.setOnSeekBarChangeListener(new Wordnumlistener());
 
-        piechartdata(n1, n2, n3, n4);
+        piechartdata(n1, n2, n3);
         newpiechartdata(newn, n-newn-nlearn, nlearn);
     }
 
@@ -305,9 +288,8 @@ public class CountryFragment extends Fragment {
             switch (arcIndex)
             {
                 case 0: str = "陌生:";break;
-                case 1: str = "有印象:";break;
-                case 2: str = "比较熟悉:";break;
-                case 3: str = "非常熟悉:";break;
+                case 1: str = "比较熟悉:";break;
+                case 2: str = "非常熟悉:";break;
             }
             temp.setTextColor(value.getColor());
             temp.setText(str + value.getValue());
@@ -344,9 +326,10 @@ public class CountryFragment extends Fragment {
         layoutinit();
         learndata = getArguments().get("data")+"";
         learnfile = new File(ESD + learndata +".txt");
+        timefile =  new File(ESD + learndata + "time.txt");
         TextView wtf = (TextView) view.findViewById(R.id.textView);
         wtf.setText(learndata);
-        analysedata(learnfile);
+        analysedata();
         memory.setOnClickListener(new Memorylistener());
         tasks.setOnClickListener(new Taskslistener());
         return view;
